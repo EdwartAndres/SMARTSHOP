@@ -9,52 +9,85 @@
     <title>Hello, world!</title>
   </head>
   <body>
-        <nav class="navbar navbar-expand-lg navbar-light" id="navbarB">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">
-                    <img src="assets/logo.png" alt="" width="42" height="42" class="d-inline-block align-text-top">
-                    KDM
-                  </a>
-                  <button class="navbar-toggler  collapsed mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link" href="clientes.html">Clientes</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="productos.html">Productos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="pedidos.html">Pedidos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="distribuidores.html">Distribuidores</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="comprar.html">Compras</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="detalles.html">Detalles</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="devoluciones.html">Devoluciones</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="pedidoproducto.html">Pedido Producto</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="empleados.html">Empleados</a>
-                  </li>
-                </ul>
-                <a href="#" class="d-flex align-items-center link-dark text-decoration-none mx-lg-4"aria-expanded="false">
-                    <img src="assets/persona.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong>Admin</strong>
-                  </a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbarB">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/logo.png" alt="Logo" width="42" height="42">
+          SMARTSHOP
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="clientes.html">Clientes</a></li>
+            <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="pedidos.html">Pedidos</a></li>
+            <li class="nav-item"><a class="nav-link" href="distribuidores.html">Distribuidores</a></li>
+            <li class="nav-item"><a class="nav-link" href="comprar.html">Compras</a></li>
+            <li class="nav-item"><a class="nav-link" href="detalles.html">Detalles</a></li>
+            <li class="nav-item"><a class="nav-link" href="devoluciones.html">Devoluciones</a></li>
+            <li class="nav-item"><a class="nav-link" href="pedidoproducto.html">Pedido Producto</a></li>
+            <li class="nav-item"><a class="nav-link" href="empleados.html">Empleados</a></li>
+          </ul>
+          <a href="#" class="d-flex align-items-center link-dark text-decoration-none mx-4">
+            <img src="assets/persona.png" alt="Admin" width="32" height="32" class="rounded-circle me-2">
+            <strong>Admin</strong>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+          <section class="vh-100">
+            <div class="container py-5 h-100">
+              <div class="row d-flex align-items-center justify-content-center h-100">
+                <div class="col-md-8 col-lg-7 col-xl-6">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+                    class="img-fluid" alt="Phone image">
+                </div>
+                <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                  <form>
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                      <input type="email" id="form1Example13" class="form-control form-control-lg" />
+                      <label class="form-label" for="form1Example13">Email address</label>
+                    </div>
+          
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                      <input type="password" id="form1Example23" class="form-control form-control-lg" />
+                      <label class="form-label" for="form1Example23">Password</label>
+                    </div>
+          
+                    <div class="d-flex justify-content-around align-items-center mb-4">
+                      <!-- Checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
+                        <label class="form-check-label" for="form1Example3"> Remember me </label>
+                      </div>
+                      <a href="#!">Forgot password?</a>
+                    </div>
+          
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+          
+                    <div class="divider d-flex align-items-center my-4">
+                      <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+                    </div>
+          
+                    <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="#!"
+                      role="button">
+                      <i class="fab fa-facebook-f me-2"></i>Continue with Facebook
+                    </a>
+                    <a class="btn btn-primary btn-lg btn-block" style="background-color: #55acee" href="#!"
+                      role="button">
+                      <i class="fab fa-twitter me-2"></i>Continue with Twitter</a>
+          
+                  </form>
+                </div>
               </div>
             </div>
-          </nav>
+          </section>
     <script src="js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

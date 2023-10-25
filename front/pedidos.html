@@ -9,106 +9,84 @@
     <title>Hello, world!</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light" id="navbarB">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="index.html">
-            <img src="assets/logo.png" alt="" width="42" height="42" class="d-inline-block align-text-top">
-            KDM
-        </a>
-        <button class="navbar-toggler  collapsed mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbarB">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">
+            <img src="assets/logo.png" alt="Logo" width="42" height="42">
+            SMARTSHOP
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="clientes.html">Clientes</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="productos.html">Productos</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="pedidos.html">Pedidos</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="distribuidores.html">Distribuidores</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="comprar.html">Compras</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="detalles.html">Detalles</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="devoluciones.html">Devoluciones</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="pedidoproducto.html">Pedido Producto</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="empleados.html">Empleados</a>
-              </li>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item"><a class="nav-link" href="clientes.html">Clientes</a></li>
+              <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+              <li class="nav-item"><a class="nav-link" href="pedidos.html">Pedidos</a></li>
+              <li class="nav-item"><a class="nav-link" href="distribuidores.html">Distribuidores</a></li>
+              <li class="nav-item"><a class="nav-link" href="comprar.html">Compras</a></li>
+              <li class="nav-item"><a class="nav-link" href="detalles.html">Detalles</a></li>
+              <li class="nav-item"><a class="nav-link" href="devoluciones.html">Devoluciones</a></li>
+              <li class="nav-item"><a class="nav-link" href="pedidoproducto.html">Pedido Producto</a></li>
+              <li class="nav-item"><a class="nav-link" href="empleados.html">Empleados</a></li>
             </ul>
-            <a href="#" class="d-flex align-items-center link-dark text-decoration-none mx-lg-4"aria-expanded="false">
-                <img src="assets/persona.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>Admin</strong>
-              </a>
+            <a href="#" class="d-flex align-items-center link-dark text-decoration-none mx-4">
+              <img src="assets/persona.png" alt="Admin" width="32" height="32" class="rounded-circle me-2">
+              <strong>Admin</strong>
+            </a>
           </div>
-    </div>
-</nav>
-
+        </div>
+      </nav>
+  
+<!-- Formulario HTML -->
 <div class="container">
     <div class="row">
         <div class="col-12">
             <form id="formulario">
                 <div class="row">
-                    <div class="mb-3 col-12 text-center">
-                        <p id="textoTitulo">Insertar | Actualizar Pedidos</p>
+                    <div class="mb-3 col-5">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" id="producto">
                     </div>
                     <div class="mb-3 col-2">
-                        <label class="form-label">Código</label>
-                        <input type="number" class="form-control" id="codigo"disabled>
-                    </div>
-                    <div class="mb-3 col-5"> 
-                        <label class="form-label">Cantidad Total</label>
+                        <label class="form-label">Cantidad</label>
                         <input type="number" class="form-control" id="cantidad">
                     </div>
-                    <div class="mb-3 col-5"> 
-                        <label class="form-label">Costo Neto</label>
-                        <input type="number" class="form-control" id="costo">
+                    <div class="mb-3 col-2">
+                        <label class="form-label">Precio Unitario</label>
+                        <input type="number" class="form-control" id="precioUnitario">
                     </div>
                     <div class="mb-3 col-12">
-                        <label class="form-label">NIT Distribuidor</label>
-                        <select class="form-select" id="distribuidor"></select>
+                        <button type="button" class="btn btn-success" onclick="agregarProducto()">Agregar Producto</button>
                     </div>
-                    <button type="button" class="btn btn-success col-5 mx-5" onclick="insertarPedido()" id="agregar">Agregar</button>
-                    <button type="button" class="btn btn-primary col-5" disabled id="actualizar" onclick="actualizarPedido()">Actualizar</button>
                 </div>
             </form>
         </div>
-        <div class="col-9 mt-5 mb-3">
-            <button type="button" class="btn btn-warning" onclick="buscarTodosLosPedidos()">Listar todos</button>
-        </div>
-        <div class="col-3 mt-5 mb-3">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Id" aria-label="Search" id="porId">
-                <button class="btn btn-primary" type="button" onclick="buscarPedidoPorId()">Buscar</button>
-            </form>
-        </div>
-        <div class="col-12">
-            <table class="table table-striped-columns" id="tabla">
+    </div>
+    <div class="row">
+        <div class="col-12 mt-3">
+            <table class="table">
                 <thead>
-                <tr>
-                    <th scope="col">Código</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Cantidad Total</th>
-                    <th scope="col">Costo Neto</th>
-                    <th scope="col">NIT Distribuidor</th>
-                    <th scope="col"></th>
-                </tr>
+                    <tr>
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                        <th>Acciones</th>
+                    </tr>
                 </thead>
-                <tbody>
+                <tbody id="tablaProductos">
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="mb-3">
+                <label class="form-label">Total:</label>
+                <input type="text" class="form-control" id="total" readonly>
+            </div>
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 function buscarTodosLosProductos() {
     var tabla = document.querySelector("#tabla");
     $.ajax({
-        url: "http://localhost:8080/listarprodc",
+        url: "http://localhost:8080/listarpd",
         type: "GET",
         dataType: "json",
         success: function (respuesta) {
@@ -29,7 +29,7 @@ function buscarTodosLosProductos() {
 function buscarTodosLosProductosConPedidos() {
     var tabla = document.querySelector("#tabla");
     $.ajax({
-        url: "http://localhost:8080/productosEnPedidos",
+        url: "URL_DE_API_PARA_LISTAR_PRODUCTOS_CON_PEDIDOS",
         type: "GET",
         dataType: "json",
         success: function (respuesta) {
@@ -37,13 +37,13 @@ function buscarTodosLosProductosConPedidos() {
             for (i = 0; i < respuesta.length; i++) {
                 tabla.innerHTML +=
                     '<tr><td>' +
-                    respuesta[i][0]+
+                    respuesta[i][0] +
                     '</td><td>' +
-                    respuesta[i][1]+
+                    respuesta[i][1] +
                     '</td><td>' +
-                    respuesta[i][2]+ 
+                    respuesta[i][2] +
                     '</td><td>' +
-                    " "+ 
+                    " " +
                     '</td></tr>';
             }
         },
@@ -54,7 +54,7 @@ function buscarProductoPorId() {
     var tabla = document.querySelector("#tabla");
     var codigo = $("#porId").val();
     $.ajax({
-        url: "http://localhost:8080/unicoprodc/" + codigo,
+        url: "URL_DE_API_PARA_BUSCAR_PRODUCTO_POR_ID/" + codigo,
         type: "GET",
         dataType: "json",
         success: function (respuesta) {
@@ -76,7 +76,7 @@ function buscarProductoPorId() {
         },
         error: function (xhr) {
             if (xhr.status === 404) {
-              alert("El codigo de producto no existe...");
+                alert("El código de producto no existe...");
             }
         },
     });
@@ -94,7 +94,7 @@ function insertarProducto() {
         }
     };
     $.ajax({
-        url: "http://localhost:8080/agregarProductos",
+        url: "URL_DE_API_PARA_AGREGAR_PRODUCTO",
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json",
@@ -114,7 +114,7 @@ function insertarProducto() {
 
 function cargarProducto(codigo) {
     $.ajax({
-        url: "http://localhost:8080/unicoprodc/" + codigo,
+        url: "URL_DE_API_PARA_BUSCAR_PRODUCTO_POR_ID/" + codigo,
         type: "GET",
         dataType: "json",
         success: function (respuesta) {
@@ -123,7 +123,7 @@ function cargarProducto(codigo) {
             $("#agregar").prop("disabled", true);
             $("#actualizar").prop("disabled", false);
             $("#nombre").val(respuesta.nomProducto);
-            
+
             // Establecer la opción seleccionada en el campo "codigoPedido"
             $("#codigoPedido").val(respuesta.pedidos.cod_Pedido).attr('selected', 'selected');
         },
@@ -142,7 +142,7 @@ function actualizarProducto() {
         }
     };
     $.ajax({
-        url: "http://localhost:8080/actualizarProductos",
+        url: "URL_DE_API_PARA_ACTUALIZAR_PRODUCTO",
         type: "PUT",
         data: JSON.stringify(data),
         contentType: "application/json",
@@ -159,9 +159,9 @@ function actualizarProducto() {
 }
 
 function eliminarProducto(codigo) {
-    $("#eliminar").off("click").on("click", function(){
+    $("#eliminar").off("click").on("click", function () {
         $.ajax({
-            url: "http://localhost:8080/eliminarproductom/" + codigo,
+            url: "URL_DE_API_PARA_ELIMINAR_PRODUCTO/" + codigo,
             type: "DELETE",
             success: function () {
                 $("#exampleModal").modal("hide");
@@ -171,19 +171,19 @@ function eliminarProducto(codigo) {
     });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     let selectPedidos = document.querySelector('#codigoPedido')
     selectPedidos.innerHTML = ''
     $.ajax({
-        url: "http://localhost:8080/listarpd",
+        url: "URL_DE_API_PARA_LISTAR_PEDIDOS",
         type: "GET",
         datatype: "JSON",
-        success: function(respuesta) {
-            for(i=0;i<respuesta.length;i++){
-                selectPedidos.innerHTML += '<option value="' +respuesta[i].cod_Pedido +'">'
-                + respuesta[i].cod_Pedido+'  '
-                + respuesta[i].fechapedido+'  '
-                + '</option>'; 
+        success: function (respuesta) {
+            for (i = 0; i < respuesta.length; i++) {
+                selectPedidos.innerHTML += '<option value="' + respuesta[i].cod_Pedido + '">'
+                    + respuesta[i].cod_Pedido + '  '
+                    + respuesta[i].fechapedido + '  '
+                    + '</option>';
             }
         }
     });
