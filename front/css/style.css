@@ -1,0 +1,34 @@
+#navbarB{
+    background-color: #F57C00; /* Un tono de naranja, común en tiendas online */
+}
+#tabla thead tr th{
+    background-color: #F57C00; /* Coordinando con el color del encabezado */
+}
+#tabla tbody tr td{
+    background-color: #ECECEC; /* Un tono gris claro para resaltar los datos */
+} 
+#textoEliminar{
+    color: #FF0000; /* Rojo para resaltar la acción de eliminar */
+}
+.nav-link{
+    color: #333333 !important; /* Texto oscuro para una mejor legibilidad */
+}
+.active{
+    font-weight: bold !important; 
+}
+.nav-item .nav-link:hover{
+    color: #FFFFFF !important; /* Blanco para resaltar el enlace al pasar el mouse */
+}
+body{
+    background-color: #FFFFFF !important; /* Fondo blanco para una apariencia limpia */
+}
+#textoTitulo{
+    font-size: 20px !important;
+    font-weight: bold;
+}
+#formulario{
+    background-color: #F2F2F2; /* Un tono gris claro para el formulario */
+    border-radius: 20px; 
+    padding: 20px ;
+    margin-top: 5px;
+}
