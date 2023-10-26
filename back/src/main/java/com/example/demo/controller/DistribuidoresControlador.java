@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 public class DistribuidoresControlador {
     private DistribuidorServicio distribuidorServicio;
