@@ -9,35 +9,49 @@
     <title>Hello, world!</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbarB">
-        <div class="container">
+    <nav class="navbar bg-body-tertiary fixed-top">
+        <div class="container-fluid">
           <a class="navbar-brand" href="index.html">
             <img src="assets/logo.png" alt="Logo" width="42" height="42">
             SMARTSHOP
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto">
-              <li class="nav-item"><a class="nav-link" href="clientes.html">Clientes</a></li>
-              <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-              <li class="nav-item"><a class="nav-link" href="pedidos.html">Pedidos</a></li>
-              <li class="nav-item"><a class="nav-link" href="distribuidores.html">Distribuidores</a></li>
-              <li class="nav-item"><a class="nav-link" href="comprar.html">Compras</a></li>
-              <li class="nav-item"><a class="nav-link" href="detalles.html">Detalles</a></li>
-              <li class="nav-item"><a class="nav-link" href="devoluciones.html">Devoluciones</a></li>
-              <li class="nav-item"><a class="nav-link" href="pedidoproducto.html">Pedido Producto</a></li>
-              <li class="nav-item"><a class="nav-link" href="empleados.html">Empleados</a></li>
-            </ul>
-            <a href="#" class="d-flex align-items-center link-dark text-decoration-none mx-4">
-              <img src="assets/persona.png" alt="Admin" width="32" height="32" class="rounded-circle me-2">
-              <strong>Admin</strong>
-            </a>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="clientes.html">Clientes</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="productos.html">Productos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="pedidos.html">Pedidos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="empleados.html">Empleados</a>
+                </li>
+              </ul>
+              <div class="d-flex mt-3">
+                <a href="#" class="d-flex align-items-center link-dark text-decoration-none mx-4">
+                  <img src="assets/persona.png" alt="Admin" width="32" height="32" class="rounded-circle me-2">
+                  <strong>Admin</strong>
+                </a>
+                <form class="d-flex" role="search">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </nav>
-  
 <div class="container">
     <div class="row">
         <div class="col-12">

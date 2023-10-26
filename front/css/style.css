@@ -1,5 +1,38 @@
-#navbarB{
-    background-color: #F57C00; /* Un tono de naranja, común en tiendas online */
+#navbarB {
+    background-color: #F57C00; /* Color de fondo de la barra de navegación */
+    flex-direction: column; /* Cambiar la dirección del flexbox a columna */
+    align-items: flex-start; /* Alinear elementos a la izquierda */
+  }
+  
+  .navbar-brand {
+    text-align: left; /* Alinear el contenido de la marca a la izquierda */
+  }
+  
+  .navbar-nav {
+    width: 100%; /* Ocupar todo el ancho disponible */
+  }
+  
+  .nav-item {
+    width: 100%; /* Ocupar todo el ancho disponible */
+    text-align: left; /* Alinear el texto de los elementos de navegación a la izquierda */
+  }
+  
+  /* Restaurar la apariencia normal en dispositivos más grandes */
+  @media (min-width: 768px) {
+    #navbarB {
+      flex-direction: row; /* Volver a la dirección de fila para dispositivos más grandes */
+      align-items: center; /* Centrar elementos nuevamente */
+    }
+  
+    .navbar-brand {
+      text-align: center; /* Centrar la marca nuevamente */
+    }
+  
+    .nav-item {
+      width: auto; /* Restaurar el ancho automático para dispositivos más grandes */
+      text-align: center; /* Centrar el texto de los elementos de navegación nuevamente */
+    }
+  }/* Un tono de naranja, común en tiendas online */
 }
 #tabla thead tr th{
     background-color: #F57C00; /* Coordinando con el color del encabezado */
@@ -39,3 +72,5 @@ flex: 1;
 height: 1px;
 background: #eee;
 }
+
+
