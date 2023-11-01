@@ -56,8 +56,8 @@
             <form id="formulario">
                 <div class="row">
                     <div class="mb-3 col-5">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" id="producto">
+                        <label class="form-label">Seleccionar Producto</label>
+                        <select class="form-control" id="seleccionProducto"></select>
                     </div>
                     <div class="mb-3 col-2">
                         <label class="form-label">Cantidad</label>
@@ -65,12 +65,13 @@
                     </div>
                     <div class="mb-3 col-2">
                         <label class="form-label">Precio Unitario</label>
-                        <input type="number" class="form-control" id="precioUnitario">
+                        <input type="number" class="form-control" id="precioUnitario" readonly>
                     </div>
                     <div class="mb-3 col-12">
                         <button type="button" class="btn btn-success" onclick="agregarProducto()">Agregar Producto</button>
                     </div>
                 </div>
+                
             </form>
         </div>
     </div>
