@@ -21,14 +21,11 @@ public class pedidos {
     @Column(nullable = false, length = 80)
     private int costoNeto;
     @ManyToOne
-    @JoinColumn(name = "Nit_Distribuidor", referencedColumnName = "Nit_Distribuidor")
-    private distribuidores distribuidoresA;
+    @JoinColumn(name = "RUT", referencedColumnName = "RUT")
+    private Proveedor distribuidoresA;
 
-    public pedidos() {
-
-    }
-
-    public pedidos(LocalDateTime fechapedido, int can_Total, int costoNeto, distribuidores distribuidoresA) {
+    public pedidos(Integer cod_Pedido, LocalDateTime fechapedido, int can_Total, int costoNeto, Proveedor distribuidoresA) {
+        this.cod_Pedido = cod_Pedido;
         this.fechapedido = fechapedido;
         this.can_Total = can_Total;
         this.costoNeto = costoNeto;
@@ -67,11 +64,11 @@ public class pedidos {
         this.costoNeto = costoNeto;
     }
 
-    public distribuidores getDistribuidoresA() {
+    public Proveedor getDistribuidoresA() {
         return distribuidoresA;
     }
 
-    public void setDistribuidoresA(distribuidores distribuidoresA) {
+    public void setDistribuidoresA(Proveedor distribuidoresA) {
         this.distribuidoresA = distribuidoresA;
     }
 }

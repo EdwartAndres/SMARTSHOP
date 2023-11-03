@@ -1,7 +1,7 @@
 package com.example.demo.service;
 import com.example.demo.Entidad.comprar;
 import com.example.demo.Entidad.detalles;
-import com.example.demo.Entidad.productos;
+import com.example.demo.Entidad.Producto;
 import com.example.demo.repositorio.ComprarCrudRepository;
 import com.example.demo.repositorio.DetallesCrudRepository;
 import com.example.demo.repositorio.ProductoCrudRepository;
@@ -28,8 +28,8 @@ public class DetallesServicio {
         } else {
             return null;
         }
-    }
-    public String agregarDetalles(detalles detalle ){
+    }}
+    /*public String agregarDetalles(detalles detalle ){
         productos pdr= productoCrudRepository.findById(detalle.getProductos().getCod_Producto()).get();
         comprar com= comprarCrudRepository.findById(detalle.getComprar().getCod_Compra()).get();
         if(productoCrudRepository.findById(detalle.getProductos().getCod_Producto()).isPresent() && comprarCrudRepository.findById(detalle.getComprar().getCod_Compra()).isPresent()){
@@ -48,3 +48,4 @@ public class DetallesServicio {
     }
 
     }
+*/

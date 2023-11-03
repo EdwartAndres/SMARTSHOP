@@ -26,13 +26,13 @@ public class pedidos_productos {
     @ManyToOne
     @JoinColumn(name = "cod_Producto", referencedColumnName = "cod_Producto")
 
-    private productos productos;
+    private Producto productos;
 
     public pedidos_productos() {
 
     }
 
-    public pedidos_productos(Integer cod, int cantidad, int precios, com.example.demo.Entidad.pedidos pedidos, com.example.demo.Entidad.productos productos) {
+    public pedidos_productos(Integer cod, int cantidad, int precios, com.example.demo.Entidad.pedidos pedidos, Producto productos) {
         this.cod = cod;
         this.cantidad = cantidad;
         this.precios = precios;
@@ -72,11 +72,11 @@ public class pedidos_productos {
         this.pedidos = pedidos;
     }
 
-    public com.example.demo.Entidad.productos getProductos() {
+    public com.example.demo.Entidad.Producto getProductos() {
         return productos;
     }
 
-    public void setProductos(com.example.demo.Entidad.productos productos) {
+    public void setProductos(com.example.demo.Entidad.Producto productos) {
         this.productos = productos;
     }
 }

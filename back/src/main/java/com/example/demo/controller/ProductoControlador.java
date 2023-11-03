@@ -1,15 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.Entidad.pedidos;
-import com.example.demo.Entidad.pedidos_productos;
-import com.example.demo.Entidad.productos;
-import com.example.demo.service.PedidoServicio;
-import com.example.demo.service.ProductoServicio;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.Entidad.Producto;
+import com.example.demo.service.ProductoServicio;
 
 import java.util.List;
+
 @CrossOrigin("*")
 @RestController
 public class ProductoControlador {
@@ -19,29 +17,34 @@ public class ProductoControlador {
         this.productoServicio = productoServicio;
     }
 
-
-    @GetMapping("/listarprodc")
-    public ResponseEntity<List<productos>>listarpedidos(){
-        return new ResponseEntity<>(productoServicio.listarproductos(), HttpStatus.OK);
-
-    }
-    @GetMapping("/unicoprodc/{cod_Producto}")
-    public ResponseEntity<productos>pedidosPorCD(@PathVariable Integer cod_Producto){
-        return new ResponseEntity<>(productoServicio.productosPorCD(cod_Producto),HttpStatus.OK);
+    @GetMapping("/producto/{idProducto}")
+    public ResponseEntity<Producto> obtenerProductoPorID(@PathVariable Integer idProducto) {
+        Producto producto = productoServicio.obtenerProductoPorID(idProducto);
+        if (producto != null) {
+            return new ResponseEntity<>(producto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-    @GetMapping("/unicoprcts/{nomProducto}")
-    public  ResponseEntity <List<productos>> ProductoPorNombre(@PathVariable ("nomProducto") String nomProducto){
-        return  new ResponseEntity<>(productoServicio.ProductoPorNombre(nomProducto),HttpStatus.OK);
-    }
-    @PostMapping("/agregarProductos")
-    public String agregarProductos(@RequestBody productos Productos ){
-        return productoServicio.agregarProductos(Productos);
     }
 
+    @GetMapping("/listarproductos")
+    public ResponseEntity<List<Producto>> listarProductos() {
+        List<Producto> productos = productoServicio.listarProductos();
+        return new ResponseEntity<>(productos, HttpStatus.OK);
+    }
+
+    @PostMapping("/guardarproducto")
+    public ResponseEntity<Producto> guardarProducto(@RequestBody Producto producto) {
+        Producto nuevoProducto = productoServicio.guardarProducto(producto);
+        return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/eliminarproducto/{idProducto}")
+    public ResponseEntity<Void> eliminarProducto(@PathVariable Integer idProducto) {
+        productoServicio.eliminarProducto(idProducto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
-
-
 
 
 

@@ -29,8 +29,8 @@ public class PedidoProductoServicio {
 
     public List<pedidos_productos> listarpedidosproductos() {
         return (List<pedidos_productos>) pedidoProductoCrudRepository.findAll();
-    }
-    public String agregarPedidosProductos(pedidos_productos pedidoProducto ){
+    }}
+    /*public String agregarPedidosProductos(pedidos_productos pedidoProducto ){
         pedidos ped= pedidoCrudRepository.findById(pedidoProducto.getPedidos().getCod_Pedido() ).get();
         productos prds= productoCrudRepository.findById(pedidoProducto.getProductos().getCod_Producto()).get();
         if(productoCrudRepository.findById(pedidoProducto.getProductos().getCod_Producto()).isPresent() && pedidoCrudRepository.findById(pedidoProducto.getPedidos().getCod_Pedido()).isPresent()){
@@ -42,4 +42,4 @@ public class PedidoProductoServicio {
         else return "El Producto y/o Pedido no existen.";
     }
 
-    }
+    }*/

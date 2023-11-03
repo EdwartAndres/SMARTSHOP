@@ -1,5 +1,5 @@
 package com.example.demo.repositorio;
-import com.example.demo.Entidad.distribuidores;
+import com.example.demo.Entidad.Proveedor;
 import com.example.demo.Entidad.empleados;
 import com.example.demo.Entidad.pedidos;
 import jakarta.transaction.Transactional;

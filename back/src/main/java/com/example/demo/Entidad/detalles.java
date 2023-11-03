@@ -25,7 +25,7 @@ public class detalles {
     @ManyToOne
     @JoinColumn(name = "cod_Producto", referencedColumnName = "cod_Producto")
 
-    private productos productos;
+    private Producto productos;
     @ManyToOne
     @JoinColumn(name = "cod_Compra", referencedColumnName = "cod_Compra")
 
@@ -36,7 +36,7 @@ public class detalles {
 
     }
 
-    public detalles(Integer cod_Identificacion, int cantidad, int precio, int pago, com.example.demo.Entidad.productos productos, com.example.demo.Entidad.comprar comprar) {
+    public detalles(Integer cod_Identificacion, int cantidad, int precio, int pago, Producto productos, com.example.demo.Entidad.comprar comprar) {
         this.cod_Identificacion = cod_Identificacion;
         this.cantidad = cantidad;
         this.precio = precio;
@@ -77,11 +77,11 @@ public class detalles {
         this.pago = pago;
     }
 
-    public com.example.demo.Entidad.productos getProductos() {
+    public com.example.demo.Entidad.Producto getProductos() {
         return productos;
     }
 
-    public void setProductos(com.example.demo.Entidad.productos productos) {
+    public void setProductos(com.example.demo.Entidad.Producto productos) {
         this.productos = productos;
     }
 

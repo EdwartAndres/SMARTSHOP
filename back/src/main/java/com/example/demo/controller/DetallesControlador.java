@@ -1,7 +1,7 @@
 package com.example.demo.controller;
-
+/*
 import com.example.demo.Entidad.detalles;
-import com.example.demo.Entidad.productos;
+import com.example.demo.Entidad.Producto;
 import com.example.demo.service.DetallesServicio;
 import com.example.demo.service.ProductoServicio;
 import org.springframework.http.HttpStatus;
@@ -39,7 +39,7 @@ public class DetallesControlador {
     }
 
 }
-
+*/
 
 
 
