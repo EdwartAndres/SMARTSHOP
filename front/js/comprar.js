@@ -1,251 +1,80 @@
-function buscarTodosLasCompras() {
-    var tabla = document.querySelector("#tabla");
-    $.ajax({
-        url: "http://localhost:8080/listarcomprar",
-        type: "GET",
-        dataType: "json",
-        success: function (respuesta) {
-            $("#tabla tbody").remove();
-            for (i = 0; i < respuesta.length; i++) {
-                tabla.innerHTML +=
-                    '<tr><td>' +
-                    respuesta[i].cod_Compra +
-                    '</td><td>' +
-                    respuesta[i].fecha +
-                    '</td><td>' +
-                    respuesta[i].total_compra +
-                    '</td><td>' +
-                    respuesta[i].iva +
-                    '</td><td>' +
-                    respuesta[i].pago +
-                    '</td><td>' +
-                    respuesta[i].vueltas +
-                    '</td><td>' +
-                    respuesta[i].dEstablecimiento +
-                    '</td><td>' +
-                    respuesta[i].metodoPago +
-                    '</td><td>' +
-                    respuesta[i].clientes.cc_clientes +
-                    '</td><td>' +
-                    respuesta[i].empleados.cc_Empleado +
-                    '</td><td>' +
-                    "<a id='textoEliminar' href='#' data-bs-toggle='modal' data-bs-target='#exampleModal'  onclick='eliminarCompra(\"" +
-                    respuesta[i].cod_Compra +
-                    "\")'> Eliminar</a> <a href='#'  onclick='cargarCompra(\"" +
-                    respuesta[i].cod_Compra +
-                    "\")'> Editar</a>" +
-                    '</td></tr>';
-            }
-        },
-    });
-}
+// Obtener referencias a los elementos del formulario
+const ventaForm = document.getElementById("ventaForm");
+const empleadoSelect = document.getElementById("empleado");
+const clienteSelect = document.getElementById("cliente");
+const productosDiv = document.getElementById("productos");
+const agregarProductoButton = document.getElementById("agregarProducto");
 
-function buscarCompraPorId() {
-    var tabla = document.querySelector("#tabla");
-    var codigo = $("#porId").val();
-    $.ajax({
-        url: "http://localhost:8080/unicocomprarcod/" + codigo,
-        type: "GET",
-        dataType: "json",
-        success: function (respuesta) {
-            $("#tabla tbody").remove();
-            tabla.innerHTML +=
-                '<tr><td>' +
-                respuesta.cod_Compra +
-                '</td><td>' +
-                respuesta.fecha +
-                '</td><td>' +
-                respuesta.total_compra +
-                '</td><td>' +
-                respuesta.iva +
-                '</td><td>' +
-                respuesta.pago +
-                '</td><td>' +
-                respuesta.vueltas +
-                '</td><td>' +
-                respuesta.dEstablecimiento +
-                '</td><td>' +
-                respuesta.metodoPago +
-                '</td><td>' +
-                respuesta.clientes.cc_clientes +
-                '</td><td>' +
-                respuesta.empleados.cc_Empleado +
-                '</td><td>' +
-                "<a id='textoEliminar' href='#' data-bs-toggle='modal' data-bs-target='#exampleModal'  onclick='eliminarCompra(\"" +
-                respuesta.cod_Compra +
-                "\")'> Eliminar</a> <a href='#'  onclick='cargarCompra(\"" +
-                respuesta.cod_Compra +
-                "\")'> Editar</a>" +
-                '</td></tr>';
-        },
-        error: function (xhr) {
-            if (xhr.status === 404) {
-              alert("El codigo de compra no existe...");
-            }
-        },
-    });
-}
-
-function insertarCompra() {
-    var codigoCompra = $("#codigoCompra").val();
-    var totalCompra = $("#totalCompra").val();
-    var iva = $("#iva").val();
-    var pago = $("#pago").val();
-    var vueltas = $("#vueltas").val();
-    var dEstablecimiento = $("#dEstablecimiento").val();
-    var metodoPago = $("#metodoPago").val();
-    var ccClientes = $("#ccClientes option:selected").val();
-    var ccEmpleado = $("#ccEmpleado option:selected").val();
-    data = {
-        cod_Compra: codigoCompra,
-        total_compra: totalCompra,
-        iva: iva,
-        pago: pago,
-        vueltas: vueltas,
-        dEstablecimiento: dEstablecimiento,
-        metodoPago: metodoPago,
-        clientes: {
-            cc_clientes: ccClientes
-        },
-        empleados: {
-            cc_Empleado: ccEmpleado
-        }
-    };
-    $.ajax({
-        url: "http://localhost:8080/agregarCompras",
-        type: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        success: function () {
-            $("#codigoCompra").val("");
-            $("#totalCompra").val("");
-            $("#iva").val("");
-            $("#pago").val("");
-            $("#vueltas").val("");
-            $("#dEstablecimiento").val("");
-            $("#metodoPago").val("");
-            $("#ccClientes").val("");
-            $("#ccEmpleado").val("");
-            buscarTodosLasCompras();
-        },
-        error: function (xhr) {
-            if (xhr.status === 409) {
-                alert("El código de compra ya existe...");
-            }
-        },
-    });
-}
-
-function cargarCompra(codigo) {
-    $.ajax({
-        url: "http://localhost:8080/unicocomprarcod/" + codigo,
-        type: "GET",
-        dataType: "json",
-        success: function (respuesta) {
-            $("#codigoCompra").val(respuesta.cod_Compra);
-            $("#codigoCompra").prop("disabled", true);
-            $("#agregar").prop("disabled", true);
-            $("#actualizar").prop("disabled", false);
-            $("#totalCompra").val(respuesta.total_compra);
-            $("#iva").val(respuesta.iva);
-            $("#pago").val(respuesta.pago);
-            $("#vueltas").val(respuesta.vueltas);
-            $("#dEstablecimiento").val(respuesta.dEstablecimiento);
-            $("#metodoPago").val(respuesta.metodoPago);
-            $("#ccClientes").val(respuesta.clientes.cc_clientes).attr('selected', 'selected');
-            $("#ccEmpleado").val(respuesta.empleados.cc_Empleado).attr('selected', 'selected');
-        },
-    });
-}
-
-function actualizarCompra() {
-    var codigoCompra = $("#codigoCompra").val();
-    var totalCompra = $("#totalCompra").val();
-    var iva = $("#iva").val();
-    var pago = $("#pago").val();
-    var vueltas = $("#vueltas").val();
-    var dEstablecimiento = $("#dEstablecimiento").val();
-    var metodoPago = $("#metodoPago").val();
-    var ccClientes = $("#ccClientes option:selected").val();
-    var ccEmpleado = $("#ccEmpleado option:selected").val();
-    data = {
-        cod_Compra: codigoCompra,
-        total_compra: totalCompra,
-        iva: iva,
-        pago: pago,
-        vueltas: vueltas,
-        dEstablecimiento: dEstablecimiento,
-        metodoPago: metodoPago,
-        clientes: {
-            cc_clientes: ccClientes
-        },
-        empleados: {
-            cc_Empleado: ccEmpleado
-        }
-    };
-    $.ajax({
-        url: "http://localhost:8080/actualizarCompras",
-        type: "PUT",
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        success: function () {
-            $("#agregar").prop("disabled", false);
-            $("#actualizar").prop("disabled", true);
-            $("#codigoCompra").val("");
-            $("#totalCompra").val("");
-            $("#iva").val("");
-            $("#pago").val("");
-            $("#vueltas").val("");
-            $("#dEstablecimiento").val("");
-            $("#metodoPago").val("");
-            $("#ccClientes").val("");
-            $("#ccEmpleado").val("");
-            buscarTodosLasCompras();
-        },
-        error: function (xhr) {},
-    });
-}
-
-function eliminarCompra(codigoCompra) {
-    $("#eliminar").off("click").on("click", function(){
-        $.ajax({
-            url: "http://localhost:8080/eliminarcompra/" + codigoCompra,
-            type: "DELETE",
-            success: function () {
-                $("#exampleModal").modal("hide");
-                buscarTodosLasCompras();
-            },
+// Función para cargar opciones desde la base de datos
+function cargarOpciones(select, endpoint) {
+    fetch(endpoint)
+        .then((response) => response.json())
+        .then((data) => {
+            select.innerHTML = "<option value=''>Selecciona una opción</option>";
+            data.forEach((item) => {
+                const option = document.createElement("option");
+                option.value = item.id; // Reemplaza 'id' con el nombre del campo de ID en tu base de datos
+                option.textContent = item.nombre; // Reemplaza 'nombre' con el nombre del campo correspondiente
+                select.appendChild(option);
+            });
+        })
+        .catch((error) => {
+            console.error("Error al cargar datos: " + error);
         });
-    });
 }
 
-$(document).ready(function() { 
-    let selectClientes = document.querySelector('#ccClientes'); 
-    selectClientes.innerHTML = ''; 
-    $.ajax({
-        url: "http://localhost:8080/listar",
-        type: "GET",
-        datatype: "JSON",
-        success: function(respuesta) {
-            for(i = 0; i < respuesta.length; i++){ 
-                selectClientes.innerHTML += '<option value="' + respuesta[i].cc_clientes +'">' 
-                + respuesta[i].cc_clientes + ' ' + respuesta[i].nomCliente
-                + '</option>'; 
-            }
-        } 
-    });
-    let selectEmpleado = document.querySelector('#ccEmpleado'); 
-    selectEmpleado.innerHTML = ''; 
-    $.ajax({
-        url: "http://localhost:8080/listarem", 
-        type: "GET",
-        datatype: "JSON",
-        success: function(respuesta) {
-            for(i = 0; i < respuesta.length; i++){ 
-                selectEmpleado.innerHTML += '<option value="' + respuesta[i].cc_Empleado +'">' 
-                + respuesta[i].cc_Empleado + ' ' + respuesta[i].nomEmpleado 
-                + '</option>'; 
-            }
-        }
-    });
+// Cargar empleados y clientes al cargar la página
+cargarOpciones(empleadoSelect, "/empleadosEndpoint"); // Reemplaza con tu URL real
+cargarOpciones(clienteSelect, "/clientesEndpoint"); // Reemplaza con tu URL real
+
+// Manejar la adición de productos dinámicamente
+let productoCounter = 0; // Contador para identificar productos agregados
+
+agregarProductoButton.addEventListener("click", () => {
+    productoCounter++;
+
+    const productoDiv = document.createElement("div");
+    productoDiv.innerHTML = `
+        <label for="producto">Producto:</label>
+        <select id="producto${productoCounter}" name="producto${productoCounter}" required>
+            <option value="">Selecciona un producto</option>
+            <!-- Opciones de productos se cargarán dinámicamente desde la base de datos -->
+        </select><br><br>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad${productoCounter}" name="cantidad${productoCounter}" min="1" required><br><br>
+    `;
+
+    productosDiv.appendChild(productoDiv);
+
+    // Cargar opciones de productos para este producto recién agregado
+    const productoSelect = document.getElementById(`producto${productoCounter}`);
+    cargarOpciones(productoSelect, "/productosEndpoint"); // Reemplaza con tu URL real
 });
+
+// Manejar el envío del formulario
+ventaForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    // Recopilar datos del formulario y productos dinámicos
+    const formData = new FormData(ventaForm);
+    const productos = [];
+
+    for (let i = 0; i < productoCounter; i++) {
+        const productoId = formData.get(`producto${i + 1}`);
+        const cantidad = formData.get(`cantidad${i + 1}`);
+
+        if (productoId && cantidad) {
+            productos.push({ productoId, cantidad });
+        }
+    }
+
+    // Aquí puedes enviar los datos al servidor, incluyendo productos
+    // Usar `formData` y `productos` para enviar todo al servidor
+    // ...
+
+    // Restablecer el formulario o realizar otras acciones según sea necesario
+    ventaForm.reset();
+    productosDiv.innerHTML = ""; // Limpiar productos dinámicos
+});
+

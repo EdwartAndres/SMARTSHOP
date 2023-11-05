@@ -1,190 +1,54 @@
-function buscarTodosLosProductos() {
-    var tabla = document.querySelector("#tabla");
-    $.ajax({
-        url: "http://localhost:8080/listarpd",
-        type: "GET",
-        dataType: "json",
-        success: function (respuesta) {
-            $("#tabla tbody").remove();
-            for (i = 0; i < respuesta.length; i++) {
-                tabla.innerHTML +=
-                    '<tr><td>' +
-                    respuesta[i].cod_Producto +
-                    '</td><td>' +
-                    respuesta[i].nomProducto +
-                    '</td><td>' +
-                    respuesta[i].pedidos.cod_Pedido +
-                    '</td><td>' +
-                    "<a id='textoEliminar' href='#' data-bs-toggle='modal' data-bs-target='#exampleModal'  onclick='eliminarProducto(\"" +
-                    respuesta[i].cod_Producto +
-                    "\")'> Eliminar</a> <a href='#'  onclick='cargarProducto(\"" +
-                    respuesta[i].cod_Producto +
-                    "\")'> Editar</a>" +
-                    '</td></tr>';
-            }
-        },
-    });
-}
+function agregarProductoInventario() {
+    var idProducto = $("#idProducto").val();
+    var cantidadStock = $("#cantidadStock").val();
+    var precioCompra = $("#precioCompra").val();
+    var precioVenta = $("#precioVenta").val();
 
-function buscarTodosLosProductosConPedidos() {
-    var tabla = document.querySelector("#tabla");
-    $.ajax({
-        url: "URL_DE_API_PARA_LISTAR_PRODUCTOS_CON_PEDIDOS",
-        type: "GET",
-        dataType: "json",
-        success: function (respuesta) {
-            $("#tabla tbody").remove();
-            for (i = 0; i < respuesta.length; i++) {
-                tabla.innerHTML +=
-                    '<tr><td>' +
-                    respuesta[i][0] +
-                    '</td><td>' +
-                    respuesta[i][1] +
-                    '</td><td>' +
-                    respuesta[i][2] +
-                    '</td><td>' +
-                    " " +
-                    '</td></tr>';
-            }
-        },
-    });
-}
-
-function buscarProductoPorId() {
-    var tabla = document.querySelector("#tabla");
-    var codigo = $("#porId").val();
-    $.ajax({
-        url: "URL_DE_API_PARA_BUSCAR_PRODUCTO_POR_ID/" + codigo,
-        type: "GET",
-        dataType: "json",
-        success: function (respuesta) {
-            $("#tabla tbody").remove();
-            tabla.innerHTML +=
-                '<tr><td>' +
-                respuesta.cod_Producto +
-                '</td><td>' +
-                respuesta.nomProducto +
-                '</td><td>' +
-                respuesta.pedidos.cod_Pedido +
-                '</td><td>' +
-                "<a id='textoEliminar' href='#' data-bs-toggle='modal' data-bs-target='#exampleModal'  onclick='eliminarProducto(\"" +
-                respuesta.cod_Producto +
-                "\")'> Eliminar</a> <a href='#'  onclick='cargarProducto(\"" +
-                respuesta.cod_Producto +
-                "\")'> Editar</a>" +
-                '</td></tr>';
-        },
-        error: function (xhr) {
-            if (xhr.status === 404) {
-                alert("El código de producto no existe...");
-            }
-        },
-    });
-}
-
-function insertarProducto() {
-    var codigo = $("#codigo").val();
-    var nombre = $("#nombre").val();
-    var codigoPedido = $("#codigoPedido option:selected").val();
-    data = {
-        cod_Producto: codigo,
-        nomProducto: nombre,
-        pedidos: {
-            cod_Pedido: codigoPedido
-        }
+    var data = {
+        idProducto: idProducto,
+        cantidadStock: cantidadStock,
+        precioCompra: precioCompra,
+        precioVenta: precioVenta
     };
+
     $.ajax({
-        url: "URL_DE_API_PARA_AGREGAR_PRODUCTO",
+        url: "http://localhost:8080/agregarProductoInventario",
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function () {
-            $("#codigo").val("");
-            $("#nombre").val("");
-            $("#codigoPedido").val("");
-            buscarTodosLosProductos();
+            $("#idProducto").val('');
+            $("#cantidadStock").val('');
+            $("#precioCompra").val('');
+            $("#precioVenta").val('');
+            listarProductosEnInventario();
         },
         error: function (xhr) {
-            if (xhr.status === 409) {
-                alert("El código del producto ya existe...");
+            if (xhr.status === 404) {
+                alert("El ID de producto no existe.");
+            } else {
+                alert("Ocurrió un error al agregar el producto al inventario.");
             }
-        },
+        }
     });
 }
 
-function cargarProducto(codigo) {
+function listarProductosEnInventario() {
+    var tablaProductosInventario = document.querySelector("#tablaProductosInventario");
     $.ajax({
-        url: "URL_DE_API_PARA_BUSCAR_PRODUCTO_POR_ID/" + codigo,
+        url: "http://localhost:8080/listarProductosEnInventario",
         type: "GET",
         dataType: "json",
         success: function (respuesta) {
-            $("#codigo").val(respuesta.cod_Producto);
-            $("#codigo").prop("disabled", true);
-            $("#agregar").prop("disabled", true);
-            $("#actualizar").prop("disabled", false);
-            $("#nombre").val(respuesta.nomProducto);
-
-            // Establecer la opción seleccionada en el campo "codigoPedido"
-            $("#codigoPedido").val(respuesta.pedidos.cod_Pedido).attr('selected', 'selected');
-        },
-    });
-}
-
-function actualizarProducto() {
-    var codigo = $("#codigo").val();
-    var nombre = $("#nombre").val();
-    var codigoPedido = $("#codigoPedido option:selected").val();
-    data = {
-        cod_Producto: codigo,
-        nomProducto: nombre,
-        pedidos: {
-            cod_Pedido: codigoPedido
-        }
-    };
-    $.ajax({
-        url: "URL_DE_API_PARA_ACTUALIZAR_PRODUCTO",
-        type: "PUT",
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        success: function () {
-            $("#agregar").prop("disabled", false);
-            $("#actualizar").prop("disabled", true);
-            $("#codigo").val("");
-            $("#nombre").val("");
-            $("#codigoPedido").val("");
-            buscarTodosLosProductos();
-        },
-        error: function (xhr) {},
-    });
-}
-
-function eliminarProducto(codigo) {
-    $("#eliminar").off("click").on("click", function () {
-        $.ajax({
-            url: "URL_DE_API_PARA_ELIMINAR_PRODUCTO/" + codigo,
-            type: "DELETE",
-            success: function () {
-                $("#exampleModal").modal("hide");
-                buscarTodosLosProductos();
-            },
-        });
-    });
-}
-
-$(document).ready(function () {
-    let selectPedidos = document.querySelector('#codigoPedido')
-    selectPedidos.innerHTML = ''
-    $.ajax({
-        url: "URL_DE_API_PARA_LISTAR_PEDIDOS",
-        type: "GET",
-        datatype: "JSON",
-        success: function (respuesta) {
-            for (i = 0; i < respuesta.length; i++) {
-                selectPedidos.innerHTML += '<option value="' + respuesta[i].cod_Pedido + '">'
-                    + respuesta[i].cod_Pedido + '  '
-                    + respuesta[i].fechapedido + '  '
-                    + '</option>';
+            $("#tablaProductosInventario tbody").remove();
+            for (var i = 0; i < respuesta.length; i++) {
+                tablaProductosInventario.innerHTML += '<tr><td>' + respuesta[i].idProducto +
+                    '</td><td>' + respuesta[i].producto.nombre +
+                    '</td><td>' + respuesta[i].cantidadStock +
+                    '</td><td>' + respuesta[i].precioCompra +
+                    '</td><td>' + respuesta[i].precioVenta +
+                    '</td></tr>';
             }
         }
     });
-});
+}

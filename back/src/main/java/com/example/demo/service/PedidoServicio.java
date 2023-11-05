@@ -1,46 +1,39 @@
 package com.example.demo.service;
-import com.example.demo.Entidad.*;
-import com.example.demo.repositorio.ProveedorCrudRepository;
-import com.example.demo.repositorio.EmpleadoCrudRepository;
+import com.example.demo.Entidad.Pedido;
 import com.example.demo.repositorio.PedidoCrudRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PedidoServicio {
-    private PedidoCrudRepository pedidoCrudRepository;
-    private ProveedorCrudRepository distribuidorCrudRepository;
+    @Autowired
+    private PedidoCrudRepository pedidoRepository;
 
-    public PedidoServicio(PedidoCrudRepository pedidoCrudRepository, ProveedorCrudRepository distribuidorCrudRepository) {
-        this.pedidoCrudRepository = pedidoCrudRepository;
-        this.distribuidorCrudRepository = distribuidorCrudRepository;
+    public List<Pedido> getAllPedidos() {
+        return pedidoRepository.findAll();
     }
 
-    public pedidos pedidosPorCD(Integer cod_Pedido) {
-        if (pedidoCrudRepository.findById(cod_Pedido).isPresent()) {
-            return pedidoCrudRepository.findById(cod_Pedido).get();
+    public Optional<Pedido> getPedidoById(Long idPedido) {
+        return pedidoRepository.findById(idPedido);
+    }
+
+    public Pedido createPedido(Pedido pedido) {
+        return pedidoRepository.save(pedido);
+    }
+
+    public Pedido updatePedido(Long idPedido, Pedido pedido) {
+        if (pedidoRepository.existsById(idPedido)) {
+            pedido.setIdPedido(idPedido);
+            return pedidoRepository.save(pedido);
         } else {
-            return null;
+            return null; // El pedido no existe
         }
     }
 
-    public String agregarPedidos(pedidos Pedidos ){
-        Proveedor dst= distribuidorCrudRepository.findById(Pedidos.getDistribuidoresA().getRut()).get();
-        if(distribuidorCrudRepository.findById(Pedidos.getDistribuidoresA().getRut()).isPresent() ){
-            Pedidos.setDistribuidoresA(dst);
-            Pedidos.setFechapedido(LocalDateTime.now());
-            pedidoCrudRepository.save(Pedidos);
-            return "Pedido Registrado";
-        }
-        else return "El distribuidor  no existen.";
+    public void deletePedido(Long idPedido) {
+        pedidoRepository.deleteById(idPedido);
     }
-    public List<pedidos> listarpedidos() {
-        return (List<pedidos>) pedidoCrudRepository.findAll();
-    }
-    public List<pedidos> PedidoPorCosto(int costoNeto){
-        return pedidoCrudRepository.findByCostoNeto(costoNeto);
-    }
-
-    }
+}

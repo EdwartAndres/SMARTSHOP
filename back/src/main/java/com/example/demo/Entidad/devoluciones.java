@@ -1,55 +1,81 @@
 package com.example.demo.Entidad;
 
 import jakarta.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name="devoluciones")
-
+@Table(name = "Devoluciones")
 public class devoluciones {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_Devolucion")
+    @Column(name = "IDDevolucion")
+    private Long idDevolucion;
 
-    private Integer cod_Devolucion;
-    @Column(nullable = false, length = 80)
-    private int unidades;
+    @Column(name = "FechaDevolucion")
+    private Date fechaDevolucion;
 
     @ManyToOne
-    @JoinColumn(name = "cod_Identificacion", referencedColumnName = "cod_Identificacion")
+    @JoinColumn(name = "Cliente", referencedColumnName = "cc_clientes")
+    private clientes cliente;
 
-    private detalles detalles;
+    @ManyToOne
+    @JoinColumn(name = "Producto", referencedColumnName = "IDProducto")
+    private Producto producto;
 
+    @Column(name = "Cantidad")
+    private int cantidad;
+
+    @Column(name = "MotivoDevolucion", columnDefinition = "TEXT")
+    private String motivoDevolucion;
 
     public devoluciones() {
     }
 
-    public devoluciones(Integer cod_Devolucion, int unidades, com.example.demo.Entidad.detalles detalles) {
-        this.cod_Devolucion = cod_Devolucion;
-        this.unidades = unidades;
-        this.detalles = detalles;
+    public Long getIdDevolucion() {
+        return idDevolucion;
     }
 
-    public Integer getCod_Devolucion() {
-        return cod_Devolucion;
+    public void setIdDevolucion(Long idDevolucion) {
+        this.idDevolucion = idDevolucion;
     }
 
-    public void setCod_Devolucion(Integer cod_Devolucion) {
-        this.cod_Devolucion = cod_Devolucion;
+    public Date getFechaDevolucion() {
+        return fechaDevolucion;
     }
 
-    public int getUnidades() {
-        return unidades;
+    public void setFechaDevolucion(Date fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
     }
 
-    public void setUnidades(int unidades) {
-        this.unidades = unidades;
+    public clientes getCliente() {
+        return cliente;
     }
 
-    public com.example.demo.Entidad.detalles getDetalles() {
-        return detalles;
+    public void setCliente(clientes cliente) {
+        this.cliente = cliente;
     }
 
-    public void setDetalles(com.example.demo.Entidad.detalles detalles) {
-        this.detalles = detalles;
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public String getMotivoDevolucion() {
+        return motivoDevolucion;
+    }
+
+    public void setMotivoDevolucion(String motivoDevolucion) {
+        this.motivoDevolucion = motivoDevolucion;
     }
 }

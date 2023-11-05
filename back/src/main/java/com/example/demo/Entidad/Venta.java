@@ -15,11 +15,11 @@ public class Venta {
     private Date fecha;
 
     @ManyToOne
-    @JoinColumn(name = "Empleado", referencedColumnName = "IDEmpleado")
+    @JoinColumn(name = "Empleado", referencedColumnName = "cc_Empleado")
     private empleados empleado;
 
     @ManyToOne
-    @JoinColumn(name = "Cliente", referencedColumnName = "IDCliente")
+    @JoinColumn(name = "Cliente", referencedColumnName = "cc_clientes")
     private clientes cliente;
 
     public Venta() {
@@ -60,5 +60,7 @@ public class Venta {
         return cliente;
     }
 
-
+    public void setCliente(clientes cliente) {
+        this.cliente = cliente;
+    }
 }

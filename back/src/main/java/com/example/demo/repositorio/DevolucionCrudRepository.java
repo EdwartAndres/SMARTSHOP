@@ -1,11 +1,7 @@
 package com.example.demo.repositorio;
 import com.example.demo.Entidad.devoluciones;
-import com.example.demo.Entidad.Producto;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface DevolucionCrudRepository extends CrudRepository<devoluciones,Integer> {
-    List<devoluciones> findByUnidades(int unidades);
+public interface DevolucionCrudRepository extends JpaRepository<devoluciones, Long> {
 }
 

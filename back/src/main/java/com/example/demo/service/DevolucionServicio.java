@@ -1,48 +1,39 @@
 package com.example.demo.service;
-import com.example.demo.Entidad.*;
-import com.example.demo.repositorio.DetallesCrudRepository;
+
+import com.example.demo.Entidad.devoluciones;
 import com.example.demo.repositorio.DevolucionCrudRepository;
-import com.example.demo.repositorio.ProductoCrudRepository;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DevolucionServicio {
-    private DevolucionCrudRepository devolucionCrudRepository;
-    private DetallesCrudRepository detallesCrudRepository;
+    @Autowired
+    private DevolucionCrudRepository devolucionRepository;
 
-    public DevolucionServicio(DevolucionCrudRepository devolucionCrudRepository, DetallesCrudRepository detallesCrudRepository) {
-        this.devolucionCrudRepository = devolucionCrudRepository;
-        this.detallesCrudRepository = detallesCrudRepository;
+    public List<devoluciones> getAllDevoluciones() {
+        return devolucionRepository.findAll();
     }
 
-    public devoluciones devolucionPorCD(Integer cod_Devolucion) {
-        if (devolucionCrudRepository.findById(cod_Devolucion).isPresent()) {
-            return devolucionCrudRepository.findById(cod_Devolucion).get();
+    public Optional<devoluciones> getDevolucionById(Long idDevolucion) {
+        return devolucionRepository.findById(idDevolucion);
+    }
+
+    public devoluciones createDevolucion(devoluciones devolucion) {
+        return devolucionRepository.save(devolucion);
+    }
+
+    public devoluciones updateDevolucion(Long idDevolucion, devoluciones devolucion) {
+        if (devolucionRepository.existsById(idDevolucion)) {
+            devolucion.setIdDevolucion(idDevolucion);
+            return devolucionRepository.save(devolucion);
         } else {
-            return null;
+            return null; // La devolución no existe
         }
     }
-
-    public List<devoluciones> listardevoluciones() {
-        return (List<devoluciones>) devolucionCrudRepository.findAll();
+    public void deleteDevolucion(Long idDevolucion) {
+        devolucionRepository.deleteById(idDevolucion);
     }
-
-    public List<devoluciones> devolucionporUnidad(int unidades) {
-        return devolucionCrudRepository.findByUnidades(unidades);
-    }
-
-
-    public String agregarDevolucion(devoluciones Devoluciones ){
-        detalles det= detallesCrudRepository.findById(Devoluciones.getDetalles().getCod_Identificacion() ).get();
-        if(detallesCrudRepository.findById(Devoluciones.getDetalles().getCod_Identificacion()).isPresent()){
-            System.out.println("HOLA");
-            Devoluciones.setDetalles(det);
-            devolucionCrudRepository.save(Devoluciones);
-            return "devolucion Registrada";
-        }
-        else return "El detalle  no existen.";
-    }
-    }
+}
