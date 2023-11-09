@@ -10,7 +10,7 @@
   </head>
   <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">
+      <a class="navbar-brand" href="">
         <img src="assets/logo.png" alt="Logo" width="42" height="42">
         SMARTSHOP
       </a>
@@ -40,8 +40,11 @@
               <a class="nav-link" href="VENTAS.html">Ventas</a>
             </li>
           </ul>
+          <form name="logoutForm" th:action="@{/logout}" method="post">
+          <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+          </form>
           <div class="d-flex mt-3">
-             
+
                 <form class="d-flex" role="search">
                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-success" type="submit">Search</button>
@@ -51,33 +54,11 @@
           </div>
         </div>
       </nav>
-      <button id="login-button">Iniciar sesión</button>
-      <div sec:authorize="isAuthenticated()">
-        <img th:src="${profile.get('picture')}" th:attr="alt=${profile.get('name')}"/>
-        <h2 th:text="${profile.get('name')}"></h2>
-        <p th:text="${profile.get('email')}"></p>
-        <a th:href="@{/logout}">Log Out</a>
-    </div>
+
     <script src="js/index.js"></script>
-<script src="https://cdn.auth0.com/js/auth0/9.12/auth0.min.js"></script>
-<script>
-  const auth0 = new Auth0({
-    domain: 'dev-y5c765560t6iuirk.us.auth0.com',
-    clientID: 't2LIc8WbxbjjXe5YDLwp8KxGfTQRZYUL',
-    redirectUri: 'http://127.0.0.1:5500/CLIENTESS.html',
-    responseType: 'token id_token',
-    scope: 'openid profile email',
-  });
-
-  const loginButton = document.getElementById('login-button');
-
-  loginButton.addEventListener('click', function() {
-    auth0.authorize();
-  });
-</script>
-
+ <script src="https://cdn.auth0.com/js/auth0/9.12/auth0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script><script src="https://cdn.auth0.com/js/auth0/9.12/auth0.min.js"></script>
+  </body>
 </html>

@@ -1,5 +1,6 @@
 function buscarTodosLosClientes(){
   var tabla=document.querySelector("#tabla");
+
   $.ajax({
     url: "http://localhost:8080/listar",
     type: "GET",

@@ -6,8 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin("*")
 @RestController
+@CrossOrigin (origins = "*", allowedHeaders = "*")
+
 public class ClienteControlador {
     private ClienteServicio clienteServicio;
 
@@ -26,6 +27,7 @@ public class ClienteControlador {
     }
     @GetMapping("/listar")
     public ResponseEntity<List<clientes>>listarClientes(){
+
         return new ResponseEntity<>(clienteServicio.listaClientes(), HttpStatus.OK);
 
     }

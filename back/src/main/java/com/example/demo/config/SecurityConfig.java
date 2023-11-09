@@ -2,6 +2,7 @@ package com.example.demo.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,7 +26,8 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/images/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/*").permitAll()
+                        .requestMatchers("http://localhost:8080/CLIENTESS.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(withDefaults())
