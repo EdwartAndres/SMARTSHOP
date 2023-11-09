@@ -9,49 +9,52 @@
     <title>Hello, world!</title>
   </head>
   <body>
-    <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="index.html">
-            <img src="assets/logo.png" alt="Logo" width="42" height="42">
-            SMARTSHOP
+  <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="">
+              <img src="assets/logo.png" alt="Logo" width="42" height="42">
+              SMARTSHOP
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+              <span class="navbar-toggler-icon"></span>
           </button>
           <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">MENU</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-              <ul class="navbar-nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link" href="NUEVAVENTA.html">Nueva Venta</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="CLIENTESS.html">Clientes</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="PROVEEDOR.html">Proveedores</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="PRODUCTO.html">Productos</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="VENTAS.html">Ventas</a>
-                </li>
-              </ul>
-              <div class="d-flex mt-3">
-                 
-                    <form class="d-flex" role="search">
-                      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                      <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                  </div>
-                </div>
+              <div class="offcanvas-header">
+                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel">MENU</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
-            </div>
-          </nav>
+              <div class="offcanvas-body">
+                  <ul class="navbar-nav flex-column">
+                      <li class="nav-item">
+                          <a class="nav-link" href="NUEVAVENTA.html">Nueva Venta</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="CLIENTESS.html">Clientes</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="PROVEEDOR.html">Proveedores</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="PRODUCTO.html">Productos</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="VENTAS.html">Ventas</a>
+                      </li>
+                  </ul>
+                  <form name="logoutForm" th:action="@{/logout}" method="post">
+                      <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+                  </form>
+                  <div class="d-flex mt-3">
+
+                      <form class="d-flex" role="search">
+                          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                          <button class="btn btn-outline-success" type="submit">Search</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </nav>
       
 
           <div class="container">
