@@ -19,7 +19,7 @@ public class devoluciones {
     private clientes cliente;
 
     @ManyToOne
-    @JoinColumn(name = "Producto", referencedColumnName = "IDProducto")
+    @JoinColumn(name = "Producto", referencedColumnName = "id")
     private Producto producto;
 
     @Column(name = "Cantidad")

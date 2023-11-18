@@ -1,51 +1,45 @@
 package com.example.demo.controller;
-
-import org.springframework.http.HttpStatus;
+import com.example.demo.service.ProductoServicio;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.Entidad.Producto;
-import com.example.demo.service.ProductoServicio;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
-
+import java.util.Optional;
 @CrossOrigin("*")
 @RestController
+@RequestMapping("/api/productos")
 public class ProductoControlador {
-    private ProductoServicio productoServicio;
 
-    public ProductoControlador(ProductoServicio productoServicio) {
-        this.productoServicio = productoServicio;
+    @Autowired
+    private ProductoServicio productoService;
+
+    @GetMapping
+    public List<Producto> getAllProductos() {
+        return productoService.getAllProductos();
     }
 
-    @GetMapping("/producto/{idProducto}")
-    public ResponseEntity<Producto> obtenerProductoPorID(@PathVariable Integer idProducto) {
-        Producto producto = productoServicio.obtenerProductoPorID(idProducto);
-        if (producto != null) {
-            return new ResponseEntity<>(producto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity<Producto> getProductoById(@PathVariable Long id) {
+        Optional<Producto> producto = productoService.getProductoById(id);
+        return producto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/listarproductos")
-    public ResponseEntity<List<Producto>> listarProductos() {
-        List<Producto> productos = productoServicio.listarProductos();
-        return new ResponseEntity<>(productos, HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
+        Producto createdProducto = productoService.createProducto(producto);
+        return ResponseEntity.ok(createdProducto);
     }
 
-    @PostMapping("/guardarproducto")
-    public ResponseEntity<Producto> guardarProducto(@RequestBody Producto producto) {
-        Producto nuevoProducto = productoServicio.guardarProducto(producto);
-        return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
+    @PutMapping("/{id}")
+    public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto producto) {
+        Producto updatedProducto = productoService.updateProducto(id, producto);
+        return updatedProducto != null ? ResponseEntity.ok(updatedProducto) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/eliminarproducto/{idProducto}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable Integer idProducto) {
-        productoServicio.eliminarProducto(idProducto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
+        productoService.deleteProducto(id);
+        return ResponseEntity.noContent().build();
     }
 }
-
-
-
-

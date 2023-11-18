@@ -6,39 +6,48 @@ import jakarta.persistence.*;
 @Table(name = "Producto")
 public class Producto {
     @Id
-    @Column(name = "IDProducto")
-    private Integer idProducto;
-
-    @Column(name = "Nombre", length = 255)
+    @Column(name = "id")
+    private Integer id;
+    @Column(nullable = false, length = 100)
+    private String codigo;
+    @Column(nullable = false, length = 100)
     private String nombre;
-
-    @Column(name = "Descripcion", columnDefinition = "TEXT")
+    @Column(nullable = false, length = 100)
     private String descripcion;
+    @Column(nullable = false, length = 100)
+    private String proveedor;
+    @Column(nullable = false, length = 100)
+    private double precio;
+    @Column(nullable = false, length = 100)
+    private double costo;
+    @Column(nullable = false, length = 100)
+    private int cantidad;
 
-    @Column(name = "Categoria", length = 50)
-    private String categoria;
-
-    @Column(name = "Marca", length = 50)
-    private String marca;
-
-    @Column(name = "Imagen", length = 255)
-    private String imagen;
-
-    public Producto(Integer idProducto, String nombre, String descripcion, String categoria, String marca, String imagen) {
-        this.idProducto = idProducto;
+    public Producto(Integer id, String codigo, String nombre, String descripcion, String proveedor, double precio, double costo, int cantidad) {
+        this.id = id;
+        this.codigo = codigo;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.categoria = categoria;
-        this.marca = marca;
-        this.imagen = imagen;
+        this.proveedor = proveedor;
+        this.precio = precio;
+        this.costo = costo;
+        this.cantidad = cantidad;
     }
 
-    public Integer getIdProducto() {
-        return idProducto;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdProducto(Integer idProducto) {
-        this.idProducto = idProducto;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -57,27 +66,35 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getProveedor() {
+        return proveedor;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
     }
 
-    public String getMarca() {
-        return marca;
+    public double getPrecio() {
+        return precio;
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 
-    public String getImagen() {
-        return imagen;
+    public double getCosto() {
+        return costo;
     }
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }

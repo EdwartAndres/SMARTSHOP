@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "Inventario")
 public class Inventario {
     @Id
-    @Column(name = "IDProducto")
+    @Column(name = "id")
     private Integer idProducto;
 
     @Column(name = "CantidadStock")
@@ -21,19 +21,19 @@ public class Inventario {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "IDProducto")
+    @JoinColumn(name = "id")
     @JsonIgnore
     private Producto producto;
 
-    public Inventario(Integer idProducto, Integer cantidadStock, Double precioCompra, Double precioVenta, Producto producto) {
-        this.idProducto = idProducto;
+    public Inventario(Integer id, Integer cantidadStock, Double precioCompra, Double precioVenta, Producto producto) {
+        this.idProducto = id;
         this.cantidadStock = cantidadStock;
         this.precioCompra = precioCompra;
         this.precioVenta = precioVenta;
         this.producto = producto;
     }
 
-    public Integer getIdProducto() {
+    public Integer getId() {
         return idProducto;
     }
 
