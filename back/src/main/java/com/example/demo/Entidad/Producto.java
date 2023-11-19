@@ -2,28 +2,38 @@ package com.example.demo.Entidad;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "Producto")
 public class Producto {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
     @Column(nullable = false, length = 100)
     private String codigo;
+
     @Column(nullable = false, length = 100)
     private String nombre;
+
     @Column(nullable = false, length = 100)
     private String descripcion;
-    @Column(nullable = false, length = 100)
-    private String proveedor;
-    @Column(nullable = false, length = 100)
+
+    @ManyToOne
+    @JoinColumn(name = "RUT")
+    private Proveedor proveedor;
+
+    @Column(nullable = false)
     private double precio;
-    @Column(nullable = false, length = 100)
+
+    @Column(nullable = false)
     private double costo;
-    @Column(nullable = false, length = 100)
+
+    @Column(nullable = false)
     private int cantidad;
 
-    public Producto(Integer id, String codigo, String nombre, String descripcion, String proveedor, double precio, double costo, int cantidad) {
+    public Producto(Integer id, String codigo, String nombre, String descripcion, Proveedor proveedor, double precio, double costo, int cantidad) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -32,6 +42,9 @@ public class Producto {
         this.precio = precio;
         this.costo = costo;
         this.cantidad = cantidad;
+    }
+
+    public Producto() {
     }
 
     public Integer getId() {
@@ -66,11 +79,11 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public String getProveedor() {
+    public Proveedor getProveedor() {
         return proveedor;
     }
 
-    public void setProveedor(String proveedor) {
+    public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
     }
 

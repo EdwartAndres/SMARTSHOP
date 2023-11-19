@@ -1,10 +1,11 @@
 package com.example.demo.service;
-import org.springframework.stereotype.Service;
+
 import com.example.demo.Entidad.Producto;
 import com.example.demo.repositorio.ProductoCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductoServicio {
@@ -12,27 +13,24 @@ public class ProductoServicio {
     @Autowired
     private ProductoCrudRepository productoRepository;
 
-    public List<Producto> getAllProductos() {
+    // Obtener todos los productos
+    public List<Producto> obtenerTodosLosProductos() {
         return (List<Producto>) productoRepository.findAll();
     }
 
-    public Optional<Producto> getProductoById(Long id) {
-        return productoRepository.findById(Math.toIntExact(id));
+    // Obtener un producto por ID
+    public Producto obtenerProductoPorId(Integer id) {
+        return productoRepository.findById(id).orElse(null);
     }
 
-    public Producto createProducto(Producto producto) {
+    // Guardar un nuevo producto
+    public Producto guardarProducto(Producto producto) {
+        // Aquí puedes realizar validaciones u otras operaciones antes de guardar
         return productoRepository.save(producto);
     }
 
-    public Producto updateProducto(Long id, Producto producto) {
-        if (productoRepository.existsById(Math.toIntExact(id))) {
-            producto.setId(Math.toIntExact(id));
-            return productoRepository.save(producto);
-        }
-        return null; // Manejar el caso en que el producto no exista
-    }
-
-    public void deleteProducto(Long id) {
-        productoRepository.deleteById(Math.toIntExact(id));
+    // Eliminar un producto por ID
+    public void eliminarProducto(Integer id) {
+        productoRepository.deleteById(id);
     }
 }

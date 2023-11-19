@@ -32,6 +32,9 @@ public class Proveedor {
         this.nombreContacto = nombreContacto;
     }
 
+    public Proveedor() {
+    }
+
     public Integer getRut() {
         return rut;
     }

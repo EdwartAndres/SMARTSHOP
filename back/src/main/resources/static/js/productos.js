@@ -1,92 +1,78 @@
-$(document).ready(function () {
 
-    // Función para agregar un producto al inventario
-    function agregarProductoInventario() {
-        // Obtener los valores del formulario
-        var idProducto = $("#idProducto").val();
-        var nombreProducto = $("#Nombreproducto").val();
-        var cantidadStock = $("#cantidadStock").val();
-        var precioCompra = $("#precioCompra").val();
-        var precioVenta = $("#precioVenta").val();
-
-        // Validar que los campos no estén vacíos
-        if (idProducto === "" || nombreProducto === "" || cantidadStock === "" || precioCompra === "" || precioVenta === "") {
-            alert("Por favor, complete todos los campos.");
-            return;
+function obtenerProveedoresDesdeServidor() {
+       $.ajax({
+        url: '/listarproveedores',
+        type: 'GET',
+        success: function (proveedores) {
+            llenarOpcionesProveedor(proveedores);
+        },
+        error: function (error) {
+            console.error('Error al obtener la lista de proveedores:', error);
         }
+    });
+}
 
-        // Crear un objeto de producto
-        var producto = {
-            id: idProducto,
-            nombre: nombreProducto,
-            cantidad: cantidadStock,
-            precioCompra: precioCompra,
-            precioVenta: precioVenta
-        };
+// Función para llenar dinámicamente las opciones del proveedor
+function llenarOpcionesProveedor(proveedores) {
+    const selectProveedor = document.getElementById('proveedor');
+    selectProveedor.innerHTML = '';
 
-        // Enviar el producto al backend a través de la API
-        $.ajax({
-            type: "POST",
-            url: "/api/productos",
-            contentType: "application/json",
-            data: JSON.stringify(producto),
-            success: function (response) {
-                // Limpiar el formulario después de agregar el producto
-                limpiarFormulario();
-                // Actualizar la tabla de productos en el inventario
-                actualizarTablaProductos();
-            },
-            error: function (error) {
-                console.error("Error al agregar el producto: ", error);
-            }
-        });
-    }
+    proveedores.forEach(proveedor => {
+        const option = document.createElement('option');
+        option.value = proveedor.rut; // Ajusta el valor según la estructura de tus proveedores
+        option.text = proveedor.nombre;
+        selectProveedor.add(option);
+    });
+}
 
-    // Función para limpiar el formulario
-    function limpiarFormulario() {
-        $("#idProducto").val("");
-        $("#Nombreproducto").val("");
-        $("#cantidadStock").val("");
-        $("#precioCompra").val("");
-        $("#precioVenta").val("");
-    }
+/// Función para agregar un producto al inventario
+ function agregarProductoInventario() {
+     const idProducto = document.getElementById('idProducto').value;
+     const nombreProducto = document.getElementById('nombreProducto').value;
+     const descripcionProducto = document.getElementById('descripcionProducto').value;
+     const cantidadStock = document.getElementById('cantidadStock').value;
+     const precioCompra = document.getElementById('precioCompra').value;  // Precio en el formulario
+     const precioVenta = document.getElementById('precioVenta').value;    // Precio en el formulario
+     const proveedor = document.getElementById('proveedor').value;
 
-    // Función para actualizar la tabla de productos en el inventario
-    function actualizarTablaProductos() {
-        // Obtener la tabla
-        var tablaProductos = $("#tablaProductosInventario tbody");
+     // Crea un objeto con los datos del producto
+     const nuevoProducto = {
+         id: idProducto,
+         nombre: nombreProducto,
+         descripcion: descripcionProducto,
+         cantidad: cantidadStock,
+         precio: parseFloat(precioCompra),  // Asegúrate de convertirlo a número si es necesario
+         costo: parseFloat(precioVenta),    // Asegúrate de convertirlo a número si es necesario
+         proveedor: {
+             rut: proveedor  // Esto asume que el proveedor tiene una propiedad 'rut'
+         }
+     };
 
-        // Limpiar la tabla antes de actualizar
-        tablaProductos.empty();
+     // Realiza una solicitud AJAX para agregar el producto al servidor
+     $.ajax({
+         url: '/api/productos',  // Ajusta la URL según tu configuración
+         type: 'POST',
+         contentType: 'application/json',
+         data: JSON.stringify(nuevoProducto),
+         success: function (productoAgregado) {
+             alert('Producto agregado al inventario');
 
-        // Obtener la lista de productos desde el backend a través de la API
-        $.ajax({
-            type: "GET",
-            url: "/api/productos",
-            success: function (productos) {
-                // Iterar sobre la lista de productos y agregar filas a la tabla
-                productos.forEach(function (producto) {
-                    var fila = "<tr>" +
-                        "<td>" + producto.id + "</td>" +
-                        "<td>" + producto.nombre + "</td>" +
-                        "<td>" + producto.cantidad + "</td>" +
-                        "<td>" + producto.precioCompra + "</td>" +
-                        "<td>" + producto.precioVenta + "</td>" +
-                        "<td>" + producto.proveedor + "</td>" +
-                        "</tr>";
-                    tablaProductos.append(fila);
-                });
-            },
-            error: function (error) {
-                console.error("Error al obtener la lista de productos: ", error);
-            }
-        });
-    }
+             // Limpiar los campos del formulario
+             document.getElementById('idProducto').value = '';
+             document.getElementById('nombreProducto').value = '';
+             document.getElementById('descripcionProducto').value = '';
+             document.getElementById('cantidadStock').value = '';
+             document.getElementById('precioCompra').value = '';
+             document.getElementById('precioVenta').value = '';
+             document.getElementById('proveedor').value = '';
 
-    // Llamar a la función de actualizarTablaProductos al cargar la página
-    actualizarTablaProductos();
+             // Puedes realizar otras acciones aquí, como actualizar la lista de productos
+             listarProductos();
+         },
+         error: function (error) {
+             console.error('Error al agregar el producto:', error);
+         }
+     });
+ }
 
-    // Asignar la función agregarProductoInventario al evento click del botón "Agregar al Inventario"
-    $("#agregar").click(agregarProductoInventario);
-
-});
+ obtenerProveedoresDesdeServidor();

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,13 +21,17 @@ public class SecurityConfig {
     @Value("${okta.oauth2.issuer}")
     private String issuer;
     @Value("${okta.oauth2.client-id}")
+
+
     private String clientId;
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/*").permitAll()
+                        .requestMatchers(httpServletRequest -> "/insertar".equals(httpServletRequest.getServletPath())).permitAll() // Permitir solicitudes a /insertar sin autenticación
                         .requestMatchers("http://localhost:8080/CLIENTESS.html").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -48,4 +53,5 @@ public class SecurityConfig {
             }
         };
     }
+
 }
