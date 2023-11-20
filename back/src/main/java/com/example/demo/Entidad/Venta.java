@@ -1,6 +1,7 @@
 package com.example.demo.Entidad;
 
 import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -22,14 +23,13 @@ public class Venta {
     @JoinColumn(name = "Cliente", referencedColumnName = "cc_clientes")
     private clientes cliente;
 
-    public Venta() {
-    }
+    @Lob
+    @Column(name = "PDF", columnDefinition = "bytea")
+    private byte[] pdf;
 
-    public Venta(Integer idVenta, Date fecha, empleados empleado, clientes cliente) {
-        this.idVenta = idVenta;
-        this.fecha = fecha;
-        this.empleado = empleado;
-        this.cliente = cliente;
+    // Resto de tu entidad...
+
+    public Venta() {
     }
 
     public Integer getIdVenta() {
@@ -62,5 +62,22 @@ public class Venta {
 
     public void setCliente(clientes cliente) {
         this.cliente = cliente;
+    }
+
+    public Venta(Integer idVenta, Date fecha, empleados empleado, clientes cliente) {
+        this.idVenta = idVenta;
+        this.fecha = fecha;
+        this.empleado = empleado;
+        this.cliente = cliente;
+    }
+
+    // Getters y setters para el nuevo campo 'pdf'
+
+    public byte[] getPdf() {
+        return pdf;
+    }
+
+    public void setPdf(byte[] pdf) {
+        this.pdf = pdf;
     }
 }

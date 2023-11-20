@@ -36,6 +36,16 @@ public class ProductoControlador {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<List<Producto>> obtenerProductoPorNombre(@PathVariable String nombre) {
+        List<Producto> productos = productoService.obtenerProductoPorNombre(nombre);
+
+        if (productos != null && !productos.isEmpty()) {
+            return new ResponseEntity<>(productos, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     // Crear un nuevo producto
     @PostMapping
@@ -51,7 +61,6 @@ public class ProductoControlador {
         Producto productoExistente = productoService.obtenerProductoPorId(id);
         if (productoExistente != null) {
             // Actualizar los campos del producto existente
-            productoExistente.setCodigo(producto.getCodigo());
             productoExistente.setNombre(producto.getNombre());
             productoExistente.setDescripcion(producto.getDescripcion());
             productoExistente.setProveedor(producto.getProveedor());

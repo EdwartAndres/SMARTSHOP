@@ -7,34 +7,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class VentaService {
+    private final VentaRepository ventaRepository;
+
     @Autowired
-    private VentaRepository ventaRepository;
+    public VentaService(VentaRepository ventaRepository) {
+        this.ventaRepository = ventaRepository;
+    }
 
     public List<Venta> getAllVentas() {
         return ventaRepository.findAll();
     }
 
-    public Optional<Venta> getVentaById(Long idVenta) {
-        return ventaRepository.findById(idVenta);
+    public Optional<Venta> getVentaById(Integer idVenta) {
+        return ventaRepository.findById(Long.valueOf(idVenta));
     }
 
     public Venta createVenta(Venta venta) {
         return ventaRepository.save(venta);
     }
 
-    public Venta updateVenta(Long idVenta, Venta venta) {
-        if (ventaRepository.existsById(idVenta)) {
-            venta.setIdVenta(Math.toIntExact(idVenta));
-            return ventaRepository.save(venta);
-        } else {
-            return null; // La venta no existe
-        }
+    public Venta updateVenta(Integer idVenta, Venta venta) {
+
+        return venta;
     }
 
-    public void deleteVenta(Long idVenta) {
-        ventaRepository.deleteById(idVenta);
+    public void deleteVenta(Integer idVenta) {
+        ventaRepository.deleteById(Long.valueOf(idVenta));
     }
 }

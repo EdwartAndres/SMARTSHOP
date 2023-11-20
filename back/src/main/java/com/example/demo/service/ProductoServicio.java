@@ -28,6 +28,10 @@ public class ProductoServicio {
         // Aquí puedes realizar validaciones u otras operaciones antes de guardar
         return productoRepository.save(producto);
     }
+    public List<Producto> obtenerProductoPorNombre(String nombre) {
+        return productoRepository.findByNombreContaining(nombre);
+    }
+
 
     // Eliminar un producto por ID
     public void eliminarProducto(Integer id) {

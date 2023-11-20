@@ -1,7 +1,6 @@
-
 function obtenerProveedoresDesdeServidor() {
        $.ajax({
-        url: '/listarproveedores',
+        url: '/api/proveedore',
         type: 'GET',
         success: function (proveedores) {
             llenarOpcionesProveedor(proveedores);
@@ -11,6 +10,7 @@ function obtenerProveedoresDesdeServidor() {
         }
     });
 }
+
 
 // Función para llenar dinámicamente las opciones del proveedor
 function llenarOpcionesProveedor(proveedores) {
@@ -22,6 +22,49 @@ function llenarOpcionesProveedor(proveedores) {
         option.value = proveedor.rut; // Ajusta el valor según la estructura de tus proveedores
         option.text = proveedor.nombre;
         selectProveedor.add(option);
+    });
+}
+function listarProductos() {
+    $.ajax({
+        url: '/api/productos',
+        type: 'GET',
+        success: function (productos) {
+            // Llama a la función para mostrar los productos en la interfaz
+            mostrarProductosEnTabla(productos);
+        },
+        error: function (error) {
+            console.error('Error al obtener la lista de productos:', error);
+        }
+    });
+}
+
+// Función para mostrar los productos en la tabla de la interfaz
+function mostrarProductosEnTabla(productos) {
+    const tablaProductos = document.getElementById('tablaProductosInventario');
+    const tbody = tablaProductos.getElementsByTagName('tbody')[0];
+
+    // Limpia la tabla antes de agregar los nuevos productos
+    tbody.innerHTML = '';
+
+    // Itera sobre la lista de productos y agrega cada uno a la tabla
+    productos.forEach(producto => {
+        const fila = tbody.insertRow();
+        const celdas = [
+            producto.id,
+            producto.nombre,
+            producto.descripcion,
+            producto.cantidad,
+            producto.precio,
+            producto.costo,
+            producto.proveedor.nombre,  // Ajusta según la estructura de tu objeto de producto y proveedor
+            '<button class="btn btn-danger" onclick="eliminarProducto(' + producto.id + ')">Eliminar</button>'
+        ];
+
+        // Agrega las celdas a la fila
+        celdas.forEach((valor, index) => {
+            const celda = fila.insertCell(index);
+            celda.innerHTML = valor;
+        });
     });
 }
 

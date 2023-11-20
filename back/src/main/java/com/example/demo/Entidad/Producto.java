@@ -12,9 +12,6 @@ public class Producto {
     private Integer id;
 
     @Column(nullable = false, length = 100)
-    private String codigo;
-
-    @Column(nullable = false, length = 100)
     private String nombre;
 
     @Column(nullable = false, length = 100)
@@ -33,9 +30,11 @@ public class Producto {
     @Column(nullable = false)
     private int cantidad;
 
-    public Producto(Integer id, String codigo, String nombre, String descripcion, Proveedor proveedor, double precio, double costo, int cantidad) {
+    public Producto() {
+    }
+
+    public Producto(Integer id, String nombre, String descripcion, Proveedor proveedor, double precio, double costo, int cantidad) {
         this.id = id;
-        this.codigo = codigo;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.proveedor = proveedor;
@@ -44,23 +43,12 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
-    public Producto() {
-    }
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
     }
 
     public String getNombre() {
