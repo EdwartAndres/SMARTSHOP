@@ -4,7 +4,9 @@ import com.example.demo.Entidad.usuario;
 import com.example.demo.repositorio.UsuarioCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UsuarioService {
@@ -16,7 +18,7 @@ public class UsuarioService {
     }
 
     public List<usuario> getAllUsuarios() {
-        return usuarioRepository.findAll();
+        return (List<usuario>) usuarioRepository.findAll();
     }
 
     public usuario getUsuarioPorId(Long id) {
@@ -33,6 +35,15 @@ public class UsuarioService {
             return usuarioRepository.save(usuario);
         }
         return null;
+    }
+    public usuario getUsuario(Map<String, Object> dataUser){
+        String email= (String) dataUser.get("email");
+        usuario user=UsuarioCrudRepository.findByEmail(email);
+        if(user!=null) {
+            return user;
+        }else{
+            return null;
+        }
     }
 
     public void eliminarUsuario(Long id) {

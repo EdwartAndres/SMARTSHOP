@@ -1,121 +1,171 @@
-function obtenerProveedoresDesdeServidor() {
-       $.ajax({
-        url: '/api/proveedore',
-        type: 'GET',
-        success: function (proveedores) {
-            llenarOpcionesProveedor(proveedores);
-        },
-        error: function (error) {
-            console.error('Error al obtener la lista de proveedores:', error);
-        }
-    });
-}
+// productos.js
 
+// Variables globales para almacenar la lista de proveedores
+let proveedores = [];
 
-// Función para llenar dinámicamente las opciones del proveedor
-function llenarOpcionesProveedor(proveedores) {
-    const selectProveedor = document.getElementById('proveedor');
-    selectProveedor.innerHTML = '';
-
-    proveedores.forEach(proveedor => {
-        const option = document.createElement('option');
-        option.value = proveedor.rut; // Ajusta el valor según la estructura de tus proveedores
-        option.text = proveedor.nombre;
-        selectProveedor.add(option);
-    });
-}
-function listarProductos() {
+// Función para cargar dinámicamente las opciones del proveedor en el select
+function cargarOpcionesProveedor() {
+    // Hacer una solicitud AJAX para obtener la lista de proveedores
     $.ajax({
-        url: '/api/productos',
-        type: 'GET',
-        success: function (productos) {
-            // Llama a la función para mostrar los productos en la interfaz
-            mostrarProductosEnTabla(productos);
+        url: "/listarproveedores", // Ajusta la URL según la ruta de tu controlador
+        type: "GET",
+        success: function (data) {
+            proveedores = data;
+            // Limpiar las opciones existentes
+            $("#proveedor").empty();
+            // Agregar las nuevas opciones
+            for (let i = 0; i < proveedores.length; i++) {
+                $("#proveedor").append(`<option value="${proveedores[i].rut}">${proveedores[i].nombre}</option>`);
+            }
         },
         error: function (error) {
-            console.error('Error al obtener la lista de productos:', error);
+            console.log("Error al obtener la lista de proveedores:", error);
         }
     });
 }
 
-// Función para mostrar los productos en la tabla de la interfaz
-function mostrarProductosEnTabla(productos) {
-    const tablaProductos = document.getElementById('tablaProductosInventario');
-    const tbody = tablaProductos.getElementsByTagName('tbody')[0];
+// Función para agregar un producto al inventario
+function agregarProductoInventario() {
+    // Obtener los valores del formulario
+    const idProducto = $("#idProducto").val();
+    const nombreProducto = $("#nombreProducto").val();
+    const descripcionProducto = $("#descripcionProducto").val();
+    const cantidadStock = $("#cantidadStock").val();
+    const precioCompra = $("#precioCompra").val();
+    const precioVenta = $("#precioVenta").val();
+    const proveedorSeleccionado = $("#proveedor").val();
 
-    // Limpia la tabla antes de agregar los nuevos productos
-    tbody.innerHTML = '';
+    // Validar que los campos requeridos estén completos
+    if (!idProducto || !nombreProducto || !descripcionProducto || !cantidadStock || !precioCompra || !precioVenta || !proveedorSeleccionado) {
+        alert("Por favor, complete todos los campos.");
+        return;
+    }
 
-    // Itera sobre la lista de productos y agrega cada uno a la tabla
-    productos.forEach(producto => {
-        const fila = tbody.insertRow();
-        const celdas = [
-            producto.id,
-            producto.nombre,
-            producto.descripcion,
-            producto.cantidad,
-            producto.precio,
-            producto.costo,
-            producto.proveedor.nombre,  // Ajusta según la estructura de tu objeto de producto y proveedor
-            '<button class="btn btn-danger" onclick="eliminarProducto(' + producto.id + ')">Eliminar</button>'
-        ];
+    // Crear un objeto de producto
+    const nuevoProducto = {
+        id: idProducto,
+        nombre: nombreProducto,
+        descripcion: descripcionProducto,
+        cantidad: cantidadStock,
+        precioCompra: precioCompra,
+        precioVenta: precioVenta,
+        proveedor: proveedores.find(proveedor => proveedor.rut == proveedorSeleccionado)
+    };
 
-        // Agrega las celdas a la fila
-        celdas.forEach((valor, index) => {
-            const celda = fila.insertCell(index);
-            celda.innerHTML = valor;
-        });
+    // Hacer una solicitud AJAX para guardar el producto
+    $.ajax({
+        url: "/api/productos",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(nuevoProducto),
+        success: function (data) {
+            alert("Producto agregado al inventario correctamente.");
+            // Limpiar el formulario después de agregar el producto
+            $("#formularioProductos")[0].reset();
+        },
+        error: function (error) {
+            console.log("Error al agregar el producto:", error);
+            alert("Error al agregar el producto. Por favor, inténtelo de nuevo.");
+        }
     });
 }
 
-/// Función para agregar un producto al inventario
- function agregarProductoInventario() {
-     const idProducto = document.getElementById('idProducto').value;
-     const nombreProducto = document.getElementById('nombreProducto').value;
-     const descripcionProducto = document.getElementById('descripcionProducto').value;
-     const cantidadStock = document.getElementById('cantidadStock').value;
-     const precioCompra = document.getElementById('precioCompra').value;  // Precio en el formulario
-     const precioVenta = document.getElementById('precioVenta').value;    // Precio en el formulario
-     const proveedor = document.getElementById('proveedor').value;
+// Función para listar productos
+function listarProductos() {
+    // Hacer una solicitud AJAX para obtener la lista de productos
+    $.ajax({
+        url: "/api/productos",
+        type: "GET",
+        success: function (data) {
+            // Limpiar la tabla antes de llenarla con los nuevos datos
+            $("#tablaProductosInventario tbody").empty();
+            // Llenar la tabla con los productos
+            for (let i = 0; i < data.length; i++) {
+                $("#tablaProductosInventario tbody").append(`
+                    <tr>
+                        <td>${data[i].id}</td>
+                        <td>${data[i].nombre}</td>
+                        <td>${data[i].descripcion}</td>
+                        <td>${data[i].cantidad}</td>
+                        <td>${data[i].precioCompra}</td>
+                        <td>${data[i].precioVenta}</td>
+                        <td>${data[i].proveedor.nombre}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="eliminarProducto(${data[i].id})">Eliminar</button>
+                        </td>
+                    </tr>
+                `);
+            }
+        },
+        error: function (error) {
+            console.log("Error al obtener la lista de productos:", error);
+        }
+    });
+}
 
-     // Crea un objeto con los datos del producto
-     const nuevoProducto = {
-         id: idProducto,
-         nombre: nombreProducto,
-         descripcion: descripcionProducto,
-         cantidad: cantidadStock,
-         precio: parseFloat(precioCompra),  // Asegúrate de convertirlo a número si es necesario
-         costo: parseFloat(precioVenta),    // Asegúrate de convertirlo a número si es necesario
-         proveedor: {
-             rut: proveedor  // Esto asume que el proveedor tiene una propiedad 'rut'
-         }
-     };
+// Función para eliminar un producto
+function eliminarProducto(idProducto) {
+    // Confirmar antes de eliminar
+    if (confirm("¿Está seguro de que desea eliminar este producto?")) {
+        // Hacer una solicitud AJAX para eliminar el producto
+        $.ajax({
+            url: `/api/productos/${idProducto}`,
+            type: "DELETE",
+            success: function () {
+                alert("Producto eliminado correctamente.");
+                // Volver a listar los productos después de eliminar
+                listarProductos();
+            },
+            error: function (error) {
+                console.log("Error al eliminar el producto:", error);
+                alert("Error al eliminar el producto. Por favor, inténtelo de nuevo.");
+            }
+        });
+    }
+}
 
-     // Realiza una solicitud AJAX para agregar el producto al servidor
-     $.ajax({
-         url: '/api/productos',  // Ajusta la URL según tu configuración
-         type: 'POST',
-         contentType: 'application/json',
-         data: JSON.stringify(nuevoProducto),
-         success: function (productoAgregado) {
-             alert('Producto agregado al inventario');
+// Función para buscar un producto por ID
+function buscarProductoPorId() {
+    // Obtener el ID de producto a buscar
+    const idProductoABuscar = $("#porIdProducto").val();
 
-             // Limpiar los campos del formulario
-             document.getElementById('idProducto').value = '';
-             document.getElementById('nombreProducto').value = '';
-             document.getElementById('descripcionProducto').value = '';
-             document.getElementById('cantidadStock').value = '';
-             document.getElementById('precioCompra').value = '';
-             document.getElementById('precioVenta').value = '';
-             document.getElementById('proveedor').value = '';
+    // Validar que el campo no esté vacío
+    if (!idProductoABuscar) {
+        alert("Por favor, ingrese un ID de producto.");
+        return;
+    }
 
-             // Puedes realizar otras acciones aquí, como actualizar la lista de productos
-             listarProductos();
-         },
-         error: function (error) {
-             console.error('Error al agregar el producto:', error);
-         }
-     });
- }
+    // Hacer una solicitud AJAX para buscar el producto por ID
+    $.ajax({
+        url: `/api/productos/${idProductoABuscar}`,
+        type: "GET",
+        success: function (data) {
+            // Limpiar la tabla antes de llenarla con el resultado de búsqueda
+            $("#tablaProductosInventario tbody").empty();
+            // Llenar la tabla con el producto encontrado
+            $("#tablaProductosInventario tbody").append(`
+                <tr>
+                    <td>${data.id}</td>
+                    <td>${data.nombre}</td>
+                    <td>${data.descripcion}</td>
+                    <td>${data.cantidad}</td>
+                    <td>${data.precioCompra}</td>
+                    <td>${data.precioVenta}</td>
+                    <td>${data.proveedor.nombre}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="eliminarProducto(${data.id})">Eliminar</button>
+                    </td>
+                </tr>
+            `);
+        },
+        error: function (error) {
+            console.log("Error al buscar el producto por ID:", error);
+            alert("Producto no encontrado. Por favor, verifique el ID ingresado.");
+        }
+    });
+}
 
- obtenerProveedoresDesdeServidor();
+// Cargar opciones de proveedores al cargar la página
+$(document).ready(function () {
+    cargarOpcionesProveedor();
+});

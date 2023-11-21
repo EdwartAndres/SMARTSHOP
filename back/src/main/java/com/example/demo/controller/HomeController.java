@@ -24,5 +24,6 @@ public class HomeController {
         // Redirect to the home page after successful login
         return "redirect:/";
     }
+
 }
 
