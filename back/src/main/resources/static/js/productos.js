@@ -1,13 +1,10 @@
-// productos.js
 
-// Variables globales para almacenar la lista de proveedores
 let proveedores = [];
 
-// Función para cargar dinámicamente las opciones del proveedor en el select
 function cargarOpcionesProveedor() {
     // Hacer una solicitud AJAX para obtener la lista de proveedores
     $.ajax({
-        url: "/listarproveedores", // Ajusta la URL según la ruta de tu controlador
+        url: "/listarproveedores",
         type: "GET",
         success: function (data) {
             proveedores = data;
@@ -87,8 +84,8 @@ function listarProductos() {
                         <td>${data[i].nombre}</td>
                         <td>${data[i].descripcion}</td>
                         <td>${data[i].cantidad}</td>
-                        <td>${data[i].precioCompra}</td>
-                        <td>${data[i].precioVenta}</td>
+                        <td>${data[i].costo}</td>
+                        <td>${data[i].precio}</td>
                         <td>${data[i].proveedor.nombre}</td>
                         <td>
                             <button class="btn btn-danger" onclick="eliminarProducto(${data[i].id})">Eliminar</button>
@@ -149,8 +146,8 @@ function buscarProductoPorId() {
                     <td>${data.nombre}</td>
                     <td>${data.descripcion}</td>
                     <td>${data.cantidad}</td>
-                    <td>${data.precioCompra}</td>
-                    <td>${data.precioVenta}</td>
+                    <td>${data.costo}</td>
+                    <td>${data.precio}</td>
                     <td>${data.proveedor.nombre}</td>
                     <td>
                         <button class="btn btn-danger" onclick="eliminarProducto(${data.id})">Eliminar</button>

@@ -1,16 +1,13 @@
 package com.example.demo.service;
-
 import com.example.demo.Entidad.Venta;
 import com.example.demo.repositorio.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 @Service
 public class VentaService {
     private final VentaRepository ventaRepository;
-
     @Autowired
     public VentaService(VentaRepository ventaRepository) {
         this.ventaRepository = ventaRepository;
@@ -32,7 +29,6 @@ public class VentaService {
 
         return venta;
     }
-
     public void deleteVenta(Integer idVenta) {
         ventaRepository.deleteById(Long.valueOf(idVenta));
     }

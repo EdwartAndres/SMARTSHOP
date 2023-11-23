@@ -1,123 +1,121 @@
-// Definir variables para mantener la información de cliente, productos y total
-let clienteData = {};
-let productosData = [];
-let totalCuenta = 0;
+$(document).ready(function () {
+    // Cargar productos desde la API al cargar la página
+    cargarProductos();
 
-// Función para buscar cliente por cédula o nombre
-function buscarCliente() {
-    console.log("Buscar cliente ejecutado");
-    const clienteInput = document.getElementById("clienteInput").value;
+    // Arreglo para almacenar los productos seleccionados en la venta
+    let productosEnVenta = [];
 
-    // Realizar la llamada AJAX para obtener información del cliente
-    $.ajax({
-        url: "http://localhost:8080/api/clientes/nombre/" + clienteInput, // Reemplaza la URL con la correcta
-        type: "GET",
-        success: function (clienteData) {
-            // Actualizar la variable clienteData con la información obtenida
-            if (clienteData.length > 0) {
-                clienteData = clienteData[0]; // Tomar el primer cliente encontrado (asumiendo que la búsqueda devuelve uno)
-                // Mostrar saludo al cliente
-                document.getElementById("saludoCliente").innerText = "Hola, " + clienteData.nomCliente;
-            } else {
-                // Limpiar el saludo si no se encuentra el cliente
-                document.getElementById("saludoCliente").innerText = "";
+    // Función para cargar productos desde la API y llenar el select
+    function cargarProductos() {
+        $.ajax({
+            url: '/api/productos',
+            type: 'GET',
+            success: function (productos) {
+                // Llenar el select con los productos obtenidos
+                const productosSelect = $('#productosSelect');
+                productosSelect.empty();
+                productosSelect.append('<option value="" disabled selected>Seleccione un producto</option>');
+                productos.forEach(function (producto) {
+                    productosSelect.append(`<option value="${producto.id}" data-precio="${producto.precio}">${producto.nombre}</option>`);
+                });
+            },
+            error: function (error) {
+                console.error('Error al cargar los productos:', error);
             }
-        },
-        error: function (error) {
-            console.error("Error al buscar cliente:", error);
-        }
-    });
-}
-
-// Función para buscar producto por código o nombre
-function buscarProducto() {
-    console.log("Buscar producto ejecutado");
-    const productoInput = document.getElementById("productoInput").value;
-    const cantidadInput = parseInt(document.getElementById("cantidadInput").value);
-
-    // Realizar la llamada AJAX para obtener información del producto
-    $.ajax({
-        url: "http://localhost:8080/api/productos/nombre/" + productoInput, // Reemplaza la URL con la correcta
-        type: "GET",
-        success: function (productoData) {
-            // Actualizar la variable productosData con la información obtenida
-            if (productoData.length > 0) {
-                const producto = productoData[0]; // Tomar el primer producto encontrado (asumiendo que la búsqueda devuelve uno)
-                producto.cantidad = cantidadInput;
-                producto.precioTotal = cantidadInput * producto.precio;
-
-                // Agregar el producto a la lista de productos
-                productosData.push(producto);
-
-                // Actualizar la tabla de productos
-                actualizarTablaProductos();
-
-                // Calcular el total de la cuenta
-                calcularTotalCuenta();
-            } else {
-                console.error("Producto no encontrado");
-            }
-        },
-        error: function (error) {
-            console.error("Error al buscar producto:", error);
-        }
-    });
-}
-
-
-    // Agregar el producto a la lista de productos
-    productosData.push(producto);
-
-    // Actualizar la tabla de productos
-    actualizarTablaProductos();
-
-    // Calcular el total de la cuenta
-    calcularTotalCuenta();
-}
-
-// Función para actualizar la tabla de productos
-function actualizarTablaProductos() {
-    const productosBody = document.getElementById("productosBody");
-    productosBody.innerHTML = ""; // Limpiar el contenido actual de la tabla
-
-    // Recorrer la lista de productos y agregar filas a la tabla
-    productosData.forEach(producto => {
-        const row = productosBody.insertRow();
-        row.insertCell(0).innerText = producto.nombre;
-        row.insertCell(1).innerText = producto.cantidad;
-        row.insertCell(2).innerText = producto.precioUnitario.toFixed(2);
-        row.insertCell(3).innerText = producto.precioTotal.toFixed(2);
-
-        // Agregar botón de eliminar producto
-        const deleteButton = document.createElement("button");
-        deleteButton.innerText = "Eliminar";
-        deleteButton.addEventListener("click", function () {
-            eliminarProducto(producto);
         });
+    }
 
-        // Agregar el botón a la celda de acciones
-        const cell = row.insertCell(4);
-        cell.appendChild(deleteButton);
-    });
-}
+    // Función para agregar un producto al detalle de venta
+    function agregarProducto() {
+        const productoId = $('#productosSelect').val();
+        const productoNombre = $('#productosSelect option:selected').text();
+        const cantidad = parseInt($('#cantidad').val());
 
-// Función para eliminar un producto de la lista
-function eliminarProducto(producto) {
-    // Filtrar la lista de productos para excluir el producto a eliminar
-    productosData = productosData.filter(p => p !== producto);
+        // Validar que se haya seleccionado un producto y la cantidad sea válida
+        if (!productoId || isNaN(cantidad) || cantidad <= 0) {
+            alert('Por favor, seleccione un producto y especifique una cantidad válida.');
+            return;
+        }
 
-    // Actualizar la tabla de productos
-    actualizarTablaProductos();
+        // Verificar si el producto ya está en la venta
+        const productoExistente = productosEnVenta.find(p => p.id === productoId);
+        if (productoExistente) {
+            // Si el producto ya está en la venta, actualizar la cantidad
+            productoExistente.cantidad += cantidad;
+        } else {
+            // Si el producto no está en la venta, agregarlo
+            const precioUnitario = parseFloat($('#productosSelect option:selected').data('precio'));
+            productosEnVenta.push({
+                id: productoId,
+                nombre: productoNombre,
+                cantidad: cantidad,
+                precioUnitario: precioUnitario
+            });
+        }
 
-    // Calcular el total de la cuenta
-    calcularTotalCuenta();
-}
+        // Actualizar la lista del detalle de venta y el total
+        actualizarDetalleVenta();
+        calcularTotalVenta();
+    }
 
-// Función para calcular el total de la cuenta
-function calcularTotalCuenta() {
-    totalCuenta = productosData.reduce((total, producto) => total + producto.precioTotal, 0);
+    // Función para actualizar la lista del detalle de venta en el HTML
+    function actualizarDetalleVenta() {
+        const detalleVenta = $('#detalleVenta');
+        detalleVenta.empty();
+        productosEnVenta.forEach(function (producto) {
+            detalleVenta.append(`<li class="list-group-item">${producto.nombre} - Cantidad: ${producto.cantidad}</li>`);
+        });
+    }
 
-    // Mostrar el total en el elemento HTML
-    document.getElementById("totalCuenta").innerText = "Total: $" + totalCuenta.toFixed(2);
-}
+    // Función para calcular y mostrar el total de la venta
+    function calcularTotalVenta() {
+        let totalVenta = 0;
+        productosEnVenta.forEach(function (producto) {
+            totalVenta += producto.cantidad * producto.precioUnitario;
+        });
+        $('#totalVenta').text(totalVenta.toFixed(2));
+    }
 
+    // Función para generar la factura y enviarla al backend
+    function generarFactura() {
+        const clienteCedula = $('#clienteCedula').val();
+
+        // Validar que se haya ingresado la cédula del cliente
+        if (!clienteCedula) {
+            alert('Por favor, ingrese la cédula del cliente.');
+            return;
+        }
+
+        // Crear objeto con datos de la venta
+        const venta = {
+            clienteCedula: clienteCedula,
+            productos: productosEnVenta
+        };
+
+        // Enviar la solicitud al backend
+        $.ajax({
+            url: '/api/ventas',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(venta),
+            success: function (response) {
+                alert('Factura generada con éxito.');
+                // Limpiar el formulario después de generar la factura
+                limpiarFormulario();
+            },
+            error: function (error) {
+                console.error('Error al generar la factura:', error);
+            }
+        });
+    }
+
+    // Función para limpiar el formulario después de generar la factura
+    function limpiarFormulario() {
+        $('#clienteCedula').val('');
+        $('#productosSelect').val('');
+        $('#cantidad').val('');
+        productosEnVenta = [];
+        actualizarDetalleVenta();
+        calcularTotalVenta();
+    }
+});

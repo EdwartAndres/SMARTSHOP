@@ -54,6 +54,16 @@ public class ClienteControlador {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/api/clientes/{clienteInput}")
+    public ResponseEntity<String> clientesPorNombreOCedula(@PathVariable String clienteInput) {
+        List<clientes> clientesEncontrados = clienteServicio.findByNomCliente(clienteInput);
+
+        if (!clientesEncontrados.isEmpty()) {
+            return new ResponseEntity<>(clientesEncontrados.get(0).getNomCliente(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
     @PutMapping("/actualizarSave")
     public ResponseEntity<Void> actualizarClientesSave(@RequestBody clientes Clientes){
         if(clienteServicio.clientesPorCC(Clientes.getCc_clientes())!=null){

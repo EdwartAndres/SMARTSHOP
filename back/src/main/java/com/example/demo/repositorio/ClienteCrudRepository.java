@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ClienteCrudRepository extends CrudRepository<clientes,Integer> {
-   List<clientes> findByNomCliente(String nomCliente);
+    List<clientes> findByNomCliente(String nomCliente);
     @Transactional
     @Modifying
     @Query(value = "UPDATE clientes SET nomCliente=:nomCliente WHERE cc_clientes=:cc_clientes", nativeQuery = true)

@@ -4,19 +4,15 @@ import com.example.demo.repositorio.EmpleadoCrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class EmpleadoServicio {
     private EmpleadoCrudRepository empleadoCrudRepository;
-
     public EmpleadoServicio(EmpleadoCrudRepository empleadoCrudRepository) {
         this.empleadoCrudRepository = empleadoCrudRepository;
     }
-
     public empleados insertarempleados(empleados Empleados) {
         return empleadoCrudRepository.save(Empleados);
     }
-
     public empleados empleadosPorCC(Integer cc_Empleado) {
         if (empleadoCrudRepository.findById(cc_Empleado).isPresent()) {
             return empleadoCrudRepository.findById(cc_Empleado).get();
@@ -24,17 +20,13 @@ public class EmpleadoServicio {
             return null;
         }
     }
-
     public List<empleados> listaempleados() {
         return (List<empleados>) empleadoCrudRepository.findAll();
     }
-
         public void eliminarEmpleados (Integer id){
             empleadoCrudRepository.deleteById(id);
         }
         public void actualizarEmpleados (empleados Empleados){
             empleadoCrudRepository.actualizarEmpleados(Empleados.getNomEmpleado(), Empleados.getSalario_Empleado(), Empleados.getHorario(), Empleados.getCargo(), Empleados.getCc_Empleado());
         }
-
-
     }
