@@ -1,9 +1,7 @@
+ let productosEnVenta = [];
 $(document).ready(function () {
     // Cargar productos desde la API al cargar la página
     cargarProductos();
-
-    // Arreglo para almacenar los productos seleccionados en la venta
-    let productosEnVenta = [];
 
     // Función para cargar productos desde la API y llenar el select
     function cargarProductos() {
@@ -24,7 +22,7 @@ $(document).ready(function () {
             }
         });
     }
-
+});
     // Función para agregar un producto al detalle de venta
     function agregarProducto() {
         const productoId = $('#productosSelect').val();
@@ -71,7 +69,7 @@ $(document).ready(function () {
     function calcularTotalVenta() {
         let totalVenta = 0;
         productosEnVenta.forEach(function (producto) {
-            totalVenta += producto.cantidad * producto.precioUnitario;
+            totalVenta += producto.cantidad * producto.costo;
         });
         $('#totalVenta').text(totalVenta.toFixed(2));
     }
@@ -118,4 +116,36 @@ $(document).ready(function () {
         actualizarDetalleVenta();
         calcularTotalVenta();
     }
-});
+
+    // Función para agregar un producto al detalle de venta
+    function agregarProducto() {
+        const productoId = $('#productosSelect').val();
+        const productoNombre = $('#productosSelect option:selected').text();
+        const cantidad = parseInt($('#cantidad').val());
+
+        // Validar que se haya seleccionado un producto y la cantidad sea válida
+        if (!productoId || isNaN(cantidad) || cantidad <= 0) {
+            alert('Por favor, seleccione un producto y especifique una cantidad válida.');
+            return;
+        }
+
+        // Verificar si el producto ya está en la venta
+        const productoExistente = productosEnVenta.find(p => p.id === productoId);
+        if (productoExistente) {
+            // Si el producto ya está en la venta, actualizar la cantidad
+            productoExistente.cantidad += cantidad;
+        } else {
+            // Si el producto no está en la venta, agregarlo
+            const precioUnitario = parseFloat($('#productosSelect option:selected').data('precio'));
+            productosEnVenta.push({
+                id: productoId,
+                nombre: productoNombre,
+                cantidad: cantidad,
+                precioUnitario: precioUnitario
+            });
+        }
+
+        // Actualizar la lista del detalle de venta y el total
+        actualizarDetalleVenta();
+        calcularTotalVenta();
+    }

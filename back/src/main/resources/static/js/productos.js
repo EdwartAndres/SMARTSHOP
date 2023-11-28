@@ -44,8 +44,8 @@ function agregarProductoInventario() {
         nombre: nombreProducto,
         descripcion: descripcionProducto,
         cantidad: cantidadStock,
-        precioCompra: precioCompra,
-        precioVenta: precioVenta,
+        precio: precioCompra,
+        costo: precioVenta,
         proveedor: proveedores.find(proveedor => proveedor.rut == proveedorSeleccionado)
     };
 

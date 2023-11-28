@@ -50,7 +50,6 @@ public class ProductoControlador {
     // Crear un nuevo producto
     @PostMapping
     public ResponseEntity<Producto> crearProducto(@RequestBody Producto producto) {
-        // Aquí puedes realizar validaciones u otras operaciones antes de guardar
         Producto nuevoProducto = productoService.guardarProducto(producto);
         return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
     }

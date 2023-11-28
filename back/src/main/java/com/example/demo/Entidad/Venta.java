@@ -3,7 +3,6 @@ package com.example.demo.Entidad;
 import jakarta.persistence.*;
 
 import java.util.Date;
-
 @Entity
 @Table(name = "Ventas")
 public class Venta {
@@ -16,18 +15,24 @@ public class Venta {
     private Date fecha;
 
     @ManyToOne
-    @JoinColumn(name = "Empleado", referencedColumnName = "cc_Empleado")
+    @JoinColumn(name = "Empleado_id", referencedColumnName = "cc_Empleado")
     private empleados empleado;
 
     @ManyToOne
-    @JoinColumn(name = "Cliente", referencedColumnName = "cc_clientes")
+    @JoinColumn(name = "Cliente_id", referencedColumnName = "cc_clientes")
     private clientes cliente;
 
     @Lob
     @Column(name = "PDF", columnDefinition = "bytea")
     private byte[] pdf;
 
-    // Resto de tu entidad...
+    public Venta(Integer idVenta, Date fecha, empleados empleado, clientes cliente, byte[] pdf) {
+        this.idVenta = idVenta;
+        this.fecha = fecha;
+        this.empleado = empleado;
+        this.cliente = cliente;
+        this.pdf = pdf;
+    }
 
     public Venta() {
     }
@@ -64,15 +69,6 @@ public class Venta {
         this.cliente = cliente;
     }
 
-    public Venta(Integer idVenta, Date fecha, empleados empleado, clientes cliente) {
-        this.idVenta = idVenta;
-        this.fecha = fecha;
-        this.empleado = empleado;
-        this.cliente = cliente;
-    }
-
-    // Getters y setters para el nuevo campo 'pdf'
-
     public byte[] getPdf() {
         return pdf;
     }
@@ -81,3 +77,4 @@ public class Venta {
         this.pdf = pdf;
     }
 }
+
